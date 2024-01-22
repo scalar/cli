@@ -1,0 +1,15 @@
+{
+	"scripts": {
+		"@scalar/cli": "pnpm vite-node src/index.ts"
+	},
+	"version": "0.1.0",
+	"dependencies": {
+		"@seriousme/openapi-schema-validator": "^2.1.6",
+		"commander": "^11.1.0",
+		"prettier": "^3.2.4",
+		"vite-node": "^1.2.1"
+	},
+	"devDependencies": {
+		"@types/node": "^20.11.5"
+	}
+}

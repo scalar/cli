@@ -10,9 +10,11 @@ Hey, `scalar` works just fine, but if you really want to become friends you shou
 npm -g install @scalar/cli
 ```
 
-## Usage
+If you just want to test the CLI, prefix all commands with `npx @scalar/cli` instead of just `scalar`.
 
-### Format JSON files
+## Commands
+
+### format
 
 The given JSON file will be formatted with Prettier.
 
@@ -20,7 +22,7 @@ The given JSON file will be formatted with Prettier.
 scalar format openapi.json
 ```
 
-### Validate OpenAPI files
+### validate
 
 To check whether your OpenAPI file adheres to the Swagger 2.0, OpenAPI 3.0 or OpenAPI 3.1 specification, run the following command:
 
@@ -28,7 +30,7 @@ To check whether your OpenAPI file adheres to the Swagger 2.0, OpenAPI 3.0 or Op
 scalar validate openapi.json
 ```
 
-### Upload OpenAPI files to the Scalar Sandbox
+### share
 
 To quickly share an OpenAPI file or reference with someone, you can use the share command:
 
@@ -36,9 +38,9 @@ To quickly share an OpenAPI file or reference with someone, you can use the shar
 scalar share openapi.json
 ```
 
-It’ll give you a reference URL and an URL to the OpenAPI JSON file.
+This will upload your OpenAPI file to the [Scalar Sandbox](https://sandbox.scalar.com/) to give you a public reference URL and a public URL to your OpenAPI JSON file.
 
-### Configure the file name once
+### init
 
 If you’re tired of passing the file name again and again, just configure it once:
 
@@ -48,7 +50,9 @@ scalar init
 
 This will create a `scalar.toml` file for you. All commands will use the configured OpenAPI file by default.
 
-### Check which version is installed
+## Options
+
+### --version
 
 If you want to check which version of the CLI is installed, just run this:
 
@@ -56,7 +60,7 @@ If you want to check which version of the CLI is installed, just run this:
 scalar --version
 ```
 
-### See all available commands and options
+### --help
 
 ```bash
 scalar --help

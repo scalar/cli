@@ -1,6 +1,7 @@
 # Scalar CLI
 
-WIP, not published yet
+> [!CAUTION]
+> WIP, not published yet
 
 ## Installation
 

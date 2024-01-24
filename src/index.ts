@@ -3,6 +3,8 @@ import fs from 'node:fs'
 import { Validator } from '@seriousme/openapi-schema-validator'
 import { format } from 'prettier'
 import meta from '../package.json'
+import kleur from 'kleur'
+import prettyjson from 'prettyjson'
 
 function readFile(file: string) {
   try {
@@ -31,13 +33,13 @@ program
   .description('Format an OpenAPI file')
   .argument('<file>', 'file to format')
   .action(async (file: string) => {
-    var startTime = performance.now()
+    const startTime = performance.now()
 
     const fileContent = readFile(file)
 
     if (!fileContent) {
-      console.error('Couldn’t read file.')
-      return
+      console.error(kleur.red('Couldn’t read file.'))
+      process.exit(1)
     }
 
     const newContent = await format(fileContent, {
@@ -48,9 +50,14 @@ program
     // Replace file content with newContent
     fs.writeFileSync(file, newContent, 'utf8')
 
-    var endTime = performance.now()
+    const endTime = performance.now()
 
-    console.log(`File formatted in ${Math.round(endTime - startTime)} ms.`)
+    console.log(
+      kleur.green(`File formatted`),
+      kleur.grey(
+        `in ${kleur.white(`${kleur.bold(`${Math.round(endTime - startTime)}`)} ms`)}`,
+      ),
+    )
   })
 
 program
@@ -58,24 +65,39 @@ program
   .description('Validate an OpenAPI file')
   .argument('<file>', 'file to validate')
   .action(async (file: string) => {
-    // console.log(Validator.supportedVersions.has('3.1'))
-    // prints true
+    const startTime = performance.now()
 
     const validator = new Validator()
-    const res = await validator.validate(file)
-    // const specification = validator.specification
-    // specification now contains a Javascript object containing the specification
-    if (res.valid) {
+    const result = await validator.validate(file)
+    if (result.valid) {
       console.log(
-        `Matches the OpenAPI specification (Version ${validator.version}).`,
+        kleur.green(
+          `Matches the OpenAPI specification${kleur.white(` (OpenAPI ${kleur.bold(validator.version)})`)}`,
+        ),
       )
 
-      const schema = validator.resolveRefs()
-      // schema now contains a Javascript object containing the dereferenced schema
-    } else {
-      console.error('File doesn’t match the OpenAPI specification.')
+      const endTime = performance.now()
+
       console.log()
-      console.error(res.errors)
+      console.log(
+        kleur.green(`File validated`),
+        kleur.grey(
+          `in ${kleur.white(`${kleur.bold(`${Math.round(endTime - startTime)}`)} ms`)}`,
+        ),
+      )
+    } else {
+      console.log(prettyjson.render(result.errors))
+      console.log()
+      console.error(kleur.red(`File doesn’t match the OpenAPI specification.`))
+      console.log()
+      console.error(
+        kleur.red(
+          `${kleur.bold(`${result.errors?.length} error${result.errors && result.errors.length > 1 ? 's' : ''}`)} found.`,
+        ),
+      )
+      console.log()
+
+      process.exit(1)
     }
   })
 
@@ -84,7 +106,7 @@ program
   .description('Share an OpenAPI file')
   .argument('<file>', 'file to share')
   .action(async (file: string) => {
-    fetch('https://sandbox.scalar.com/api/sahare', {
+    fetch('https://sandbox.scalar.com/api/share', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -111,6 +133,8 @@ program
         console.error('Failed to share the file.')
         console.log()
         console.error('Error:', error)
+        console.log()
+        process.exit(1)
       })
   })
 

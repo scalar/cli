@@ -5,6 +5,8 @@ import { format } from 'prettier'
 import meta from '../package.json'
 import kleur from 'kleur'
 import prettyjson from 'prettyjson'
+import toml from 'toml-js'
+import prompts from 'prompts'
 
 function readFile(file: string) {
   try {
@@ -12,6 +14,33 @@ function readFile(file: string) {
   } catch (err) {
     console.error(err)
   }
+}
+
+function getFileFromConfiguration(fallback?: string) {
+  // Try to load the configuration
+  try {
+    const configuration = toml.parse(fs.readFileSync('scalar.toml', 'utf8'))
+
+    if (configuration?.reference?.file) {
+      return configuration.reference.file
+    }
+  } catch {}
+
+  // If fallback is empty, throw an exception
+  if (!fallback) {
+    console.error(kleur.red('No file provided.'))
+    console.log()
+    console.log(
+      kleur.white(
+        'Try `scalar init` or add the file as an argument. Read `scalar --help` for more information.',
+      ),
+    )
+    console.log()
+
+    process.exit(1)
+  }
+
+  return fallback
 }
 
 const program = new Command()
@@ -22,18 +51,94 @@ program
   .version('0.8.0')
 
 program
-  .option('--version')
+  .option('-v, --version')
   .description('Version of the CLI')
   .action(() => {
-    console.log(meta.version)
+    if (program.opts().version) {
+      console.log(meta.version)
+    }
+  })
+
+program
+  .command('init')
+  .description('Create a new `scalar.toml` file')
+  .option('-f, --file [file]', 'your OpenAPI file')
+  .action(async ({ file }) => {
+    // Check if `scalar.toml` already exists
+    if (fs.existsSync('scalar.toml')) {
+      console.warn(kleur.yellow('A `scalar.toml` file already exists.'))
+      console.log()
+
+      const { overwrite } = await prompts({
+        type: 'toggle',
+        name: 'overwrite',
+        message: 'Do you want to override the file?',
+        initial: false,
+        active: 'yes',
+        inactive: 'no',
+      })
+
+      if (overwrite === false) {
+        console.log()
+        process.exit(1)
+      }
+    }
+
+    // Ask for the OpenAPI file
+    const configuration = {
+      reference: { file: '' },
+    }
+
+    const { input } = file
+      ? {
+          input: file,
+        }
+      : await prompts({
+          type: 'text',
+          name: 'input',
+          message: 'Where is your OpenAPI file?',
+          initial: './openapi.json',
+          validate: (input: string) => {
+            return fs.existsSync(input) ? true : 'File doesn’t exist.'
+          },
+        })
+
+    configuration.reference.file = input
+
+    const content = toml.dump(configuration)
+
+    console.log()
+    console.log(kleur.bold().white(`    scalar.toml`))
+    console.log()
+    console.log(
+      content
+        .trim()
+        .split('\n')
+        .map((line) => kleur.grey(`    ${line}`))
+        .join('\n'),
+    )
+    console.log()
+
+    // Create `scalar.toml` file
+    fs.writeFileSync('scalar.toml', content)
+
+    console.log(kleur.green(`Created a new project configuration.`))
+    console.log(
+      kleur.white(
+        `Run ${kleur.grey().bold('scalar --help')} to see all available commands.`,
+      ),
+    )
+    console.log()
   })
 
 program
   .command('format')
   .description('Format an OpenAPI file')
-  .argument('<file>', 'file to format')
-  .action(async (file: string) => {
+  .argument('[file]', 'file to format')
+  .action(async (fileArgument: string) => {
     const startTime = performance.now()
+
+    const file = getFileFromConfiguration(fileArgument)
 
     const fileContent = readFile(file)
 
@@ -58,14 +163,17 @@ program
         `in ${kleur.white(`${kleur.bold(`${Math.round(endTime - startTime)}`)} ms`)}`,
       ),
     )
+    console.log()
   })
 
 program
   .command('validate')
   .description('Validate an OpenAPI file')
-  .argument('<file>', 'file to validate')
-  .action(async (file: string) => {
+  .argument('[file]', 'file to validate')
+  .action(async (fileArgument: string) => {
     const startTime = performance.now()
+
+    const file = getFileFromConfiguration(fileArgument)
 
     const validator = new Validator()
     const result = await validator.validate(file)
@@ -85,6 +193,7 @@ program
           `in ${kleur.white(`${kleur.bold(`${Math.round(endTime - startTime)}`)} ms`)}`,
         ),
       )
+      console.log()
     } else {
       console.log(prettyjson.render(result.errors))
       console.log()
@@ -104,8 +213,10 @@ program
 program
   .command('share')
   .description('Share an OpenAPI file')
-  .argument('<file>', 'file to share')
-  .action(async (file: string) => {
+  .argument('[file]', 'file to share')
+  .action(async (fileArgument: string) => {
+    const file = getFileFromConfiguration(fileArgument)
+
     fetch('https://sandbox.scalar.com/api/share', {
       method: 'POST',
       headers: {
@@ -119,14 +230,18 @@ program
       .then((data) => {
         const { id } = data
 
-        console.log('OpenAPI file shared.')
+        console.log(kleur.bold().green('Your OpenAPI file is public.'))
         console.log()
         console.log(
-          `➜  OpenAPI JSON: https://sandbox.scalar.com/files/${id}/openapi.json`,
+          `${kleur.green('➜')}  ${kleur.bold().white('Preview:')}      ${kleur.cyan(`https://sandbox.scalar.com/v/${id}`)}`,
+        )
+        console.log(
+          `${kleur.grey('➜')}  ${kleur.bold().grey('Edit:')}         ${kleur.cyan(`https://sandbox.scalar.com/e/${id}`)}`,
         )
         console.log()
-        console.log(`➜  Edit:         https://sandbox.scalar.com/e/${id}`)
-        console.log(`➜  Preview:      https://sandbox.scalar.com/v/${id}`)
+        console.log(
+          `${kleur.grey('➜')}  ${kleur.bold().grey('OpenAPI JSON:')} ${kleur.cyan(`https://sandbox.scalar.com/files/${id}/openapi.json`)}`,
+        )
         console.log()
       })
       .catch((error) => {

@@ -4,13 +4,13 @@ WIP, not published yet
 
 ## Installation
 
-Hey, `scalar` works just fine, but if you really want to become friends you should install the CLI:
+If you really want to become friends you should install the CLI:
 
 ```bash
 npm -g install @scalar/cli
 ```
 
-If you just want to test the CLI, prefix all commands with `npx @scalar/cli` instead of just `scalar`.
+Otherwise just prefix all commands with `npx @scalar/cli` instead of `scalar`. That’s fine, too.
 
 ## Commands
 

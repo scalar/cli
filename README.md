@@ -18,10 +18,10 @@ npm -g install @scalar/cli
 scalar format openapi.json
 ```
 
-### Lint OpenAPI files
+### Validate OpenAPI files
 
 ```bash
-scalar lint openapi.json
+scalar validate openapi.json
 ```
 
 ### Upload OpenAPI files to the Scalar Sandbox
@@ -42,4 +42,10 @@ scalar init
 
 ```bash
 scalar --version
+```
+
+## See all available commands and options
+
+```bash
+scalar --help
 ```

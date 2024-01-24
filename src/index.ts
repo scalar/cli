@@ -20,7 +20,7 @@ program
   .version('0.8.0')
 
 program
-  .command('version')
+  .option('--version')
   .description('Version of the CLI')
   .action(() => {
     console.log(meta.version)

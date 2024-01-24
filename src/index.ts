@@ -233,7 +233,7 @@ program
         console.log(kleur.bold().green('Your OpenAPI file is public.'))
         console.log()
         console.log(
-          `${kleur.green('➜')}  ${kleur.bold().white('Preview:')}      ${kleur.cyan(`https://sandbox.scalar.com/v/${id}`)}`,
+          `${kleur.green('➜')}  ${kleur.bold().white('Preview:')}      ${kleur.cyan(`https://sandbox.scalar.com/p/${id}`)}`,
         )
         console.log(
           `${kleur.grey('➜')}  ${kleur.bold().grey('Edit:')}         ${kleur.cyan(`https://sandbox.scalar.com/e/${id}`)}`,

@@ -50,8 +50,8 @@ program
   })
 
 program
-  .command('lint')
-  .description('Lint an OpenAPI file')
+  .command('validate')
+  .description('Validate an OpenAPI file')
   .argument('<file>', 'file to validate')
   .action(async (file: string) => {
     // console.log(Validator.supportedVersions.has('3.1'))
@@ -92,9 +92,15 @@ program
       .then((data) => {
         const { id } = data
 
-        console.log('✅ OpenAPI file made public.')
+        console.log('  OpenAPI file shared.')
         console.log()
-        console.log(`https://sandbox.scalar.com/p/${id}`)
+        console.log(
+          `  ➜  OpenAPI JSON: https://sandbox.scalar.com/files/${id}/openapi.json`,
+        )
+        console.log()
+        console.log(`  ➜  Edit:         https://sandbox.scalar.com/e/${id}`)
+        console.log(`  ➜  Preview:      https://sandbox.scalar.com/v/${id}`)
+        console.log()
       })
       .catch((error) => {
         console.error('Error:', error)

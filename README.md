@@ -38,13 +38,13 @@ If you’re tired of passing the file name again and again, just configure it on
 scalar init
 ```
 
-## Check which version is installed
+### Check which version is installed
 
 ```bash
 scalar --version
 ```
 
-## See all available commands and options
+### See all available commands and options
 
 ```bash
 scalar --help

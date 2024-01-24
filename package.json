@@ -1,4 +1,5 @@
 {
+	"name": "@scalar/cli",
 	"scripts": {
 		"@scalar/cli": "pnpm vite-node src/index.ts"
 	},

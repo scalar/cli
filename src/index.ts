@@ -31,6 +31,8 @@ program
   .description('Format an OpenAPI file')
   .argument('<file>', 'file to format')
   .action(async (file: string) => {
+    var startTime = performance.now()
+
     const fileContent = readFile(file)
 
     if (!fileContent) {
@@ -46,7 +48,9 @@ program
     // Replace file content with newContent
     fs.writeFileSync(file, newContent, 'utf8')
 
-    console.log('✅ File formatted.')
+    var endTime = performance.now()
+
+    console.log(`File formatted in ${Math.round(endTime - startTime)} ms.`)
   })
 
 program
@@ -59,17 +63,18 @@ program
 
     const validator = new Validator()
     const res = await validator.validate(file)
-    const specification = validator.specification
+    // const specification = validator.specification
     // specification now contains a Javascript object containing the specification
     if (res.valid) {
       console.log(
-        '✅ Specification matches schema for version',
-        validator.version,
+        `Matches the OpenAPI specification (Version ${validator.version}).`,
       )
+
       const schema = validator.resolveRefs()
       // schema now contains a Javascript object containing the dereferenced schema
     } else {
-      console.log('❌ Specification does not match Schema')
+      console.error('File doesn’t match the OpenAPI specification.')
+      console.log()
       console.error(res.errors)
     }
   })
@@ -79,7 +84,7 @@ program
   .description('Share an OpenAPI file')
   .argument('<file>', 'file to share')
   .action(async (file: string) => {
-    fetch('https://sandbox.scalar.com/api/share', {
+    fetch('https://sandbox.scalar.com/api/sahare', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -92,17 +97,19 @@ program
       .then((data) => {
         const { id } = data
 
-        console.log('  OpenAPI file shared.')
+        console.log('OpenAPI file shared.')
         console.log()
         console.log(
-          `  ➜  OpenAPI JSON: https://sandbox.scalar.com/files/${id}/openapi.json`,
+          `➜  OpenAPI JSON: https://sandbox.scalar.com/files/${id}/openapi.json`,
         )
         console.log()
-        console.log(`  ➜  Edit:         https://sandbox.scalar.com/e/${id}`)
-        console.log(`  ➜  Preview:      https://sandbox.scalar.com/v/${id}`)
+        console.log(`➜  Edit:         https://sandbox.scalar.com/e/${id}`)
+        console.log(`➜  Preview:      https://sandbox.scalar.com/v/${id}`)
         console.log()
       })
       .catch((error) => {
+        console.error('Failed to share the file.')
+        console.log()
         console.error('Error:', error)
       })
   })

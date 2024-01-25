@@ -265,14 +265,17 @@ program
         console.log(kleur.bold().green('Your OpenAPI file is public.'))
         console.log()
         console.log(
-          `${kleur.green('➜')}  ${kleur.bold().white('Preview:')}      ${kleur.cyan(`https://sandbox.scalar.com/p/${id}`)}`,
+          `${kleur.green('➜')} ${kleur.bold().white('API Reference:'.padEnd(14))} ${kleur.cyan(`https://sandbox.scalar.com/p/${id}`)}`,
         )
         console.log(
-          `${kleur.grey('➜')}  ${kleur.bold().grey('Edit:')}         ${kleur.cyan(`https://sandbox.scalar.com/e/${id}`)}`,
+          `${kleur.grey('➜')} ${kleur.bold().grey('Editor:'.padEnd(14))} ${kleur.cyan(`https://sandbox.scalar.com/e/${id}`)}`,
         )
         console.log()
         console.log(
-          `${kleur.grey('➜')}  ${kleur.bold().grey('OpenAPI JSON:')} ${kleur.cyan(`https://sandbox.scalar.com/files/${id}/openapi.json`)}`,
+          `${kleur.grey('➜')} ${kleur.bold().grey('OpenAPI JSON:'.padEnd(14))} ${kleur.cyan(`https://sandbox.scalar.com/files/${id}/openapi.json`)}`,
+        )
+        console.log(
+          `${kleur.grey('➜')} ${kleur.bold().grey('OpenAPI YAML:'.padEnd(14))} ${kleur.cyan(`https://sandbox.scalar.com/files/${id}/openapi.yaml`)}`,
         )
         console.log()
       })

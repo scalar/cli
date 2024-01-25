@@ -115,14 +115,14 @@
     "/pet/findByStatus": {
       "get": {
         "tags": ["pet"],
-        "summary": "Finds Pets by status",
-        "description": "Multiple status values can be provided with comma separated strings",
-        "operationId": "findPetsByStatus",
+        "summary": "Finds Peats by status",
+        "description": "Multiplae status values cana be provided with comma separated strings",
+        "operationId": "findPetsBySatatus",
         "parameters": [
           {
             "name": "status",
             "in": "query",
-            "description": "Status values that need to be considered for filter",
+            "description": "Status aavaluaes that need to be considered for filter",
             "required": false,
             "explode": true,
             "schema": {

@@ -20,6 +20,17 @@ function readFile(file: string) {
   }
 }
 
+async function getOpenApiFile(file: string) {
+  const validator = new Validator()
+  const result = await validator.validate(file)
+
+  if (!result.valid) {
+    console.warn(kleur.yellow(`File doesn’t match the OpenAPI specification.`))
+  }
+
+  return validator.resolveRefs() as Promise<OpenAPI.Document>
+}
+
 function getMethodColor(method: string) {
   const colors = {
     get: 'green',
@@ -272,19 +283,23 @@ program
 program
   .command('mock')
   .description('Mock an API from an OpenAPI file')
-  .argument('[file]', 'file to validate')
-  .action(async (fileArgument: string) => {
+  .argument('[file]', 'OpenAPI file to mock the server for')
+  .option('-w, --watch', 'watch the file for changes')
+  .action(async (fileArgument: string, { watch }: { watch?: boolean }) => {
     const file = getFileFromConfiguration(fileArgument)
 
-    const validator = new Validator()
-    const result = await validator.validate(file)
-    if (!result.valid) {
-      console.log()
-      console.error(kleur.red(`File doesn’t match the OpenAPI specification.`))
-      process.exit(1)
-    }
+    let schema = await getOpenApiFile(file)
 
-    const schema = validator.resolveRefs() as OpenAPI.Document
+    // watch file for changes
+    if (watch) {
+      fs.watchFile(file, async () => {
+        console.log(
+          kleur.bold().white('[INFO]'),
+          kleur.grey(`${file} modified. Mock Server was updated.`),
+        )
+        schema = await getOpenApiFile(file)
+      })
+    }
 
     console.log(kleur.bold().white('Available Paths'))
     console.log()

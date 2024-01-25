@@ -25,7 +25,11 @@ async function getOpenApiFile(file: string) {
   const result = await validator.validate(file)
 
   if (!result.valid) {
-    console.warn(kleur.yellow(`File doesn’t match the OpenAPI specification.`))
+    console.warn(
+      kleur.bold().yellow('[WARN]'),
+      kleur.yellow(`File doesn’t match the OpenAPI specification.`),
+    )
+    console.log()
   }
 
   return validator.resolveRefs() as Promise<OpenAPI.Document>
@@ -295,7 +299,7 @@ program
       fs.watchFile(file, async () => {
         console.log(
           kleur.bold().white('[INFO]'),
-          kleur.grey(`${file} modified. Mock Server was updated.`),
+          kleur.grey('Mock Server was updated.'),
         )
         schema = await getOpenApiFile(file)
       })
@@ -304,10 +308,20 @@ program
     console.log(kleur.bold().white('Available Paths'))
     console.log()
 
+    if (
+      schema?.paths === undefined ||
+      Object.keys(schema?.paths).length === 0
+    ) {
+      console.log(
+        kleur.bold().yellow('[WARN]'),
+        kleur.grey('Couldn’t find any paths in the OpenAPI file.'),
+      )
+    }
+
     // loop through all paths
-    for (const path in schema.paths) {
+    for (const path in schema?.paths ?? []) {
       // loop through all methods
-      for (const method in schema.paths[path]) {
+      for (const method in schema.paths?.[path]) {
         console.log(
           `${kleur.bold()[getMethodColor(method)](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
         )

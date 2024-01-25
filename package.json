@@ -1,7 +1,8 @@
 {
 	"name": "@scalar/cli",
 	"scripts": {
-		"@scalar/cli": "pnpm vite-node src/index.ts"
+		"@scalar/cli": "pnpm vite-node src/index.ts",
+		"test": "vitest"
 	},
 	"type": "module",
 	"version": "0.1.0",
@@ -17,7 +18,8 @@
 		"prettyjson": "^1.2.5",
 		"prompts": "^2.4.2",
 		"toml-js": "^0.0.8",
-		"vite-node": "^1.2.1"
+		"vite-node": "^1.2.1",
+		"vitest": "^1.2.1"
 	},
 	"devDependencies": {
 		"@types/node": "^20.11.5"

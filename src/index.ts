@@ -11,6 +11,7 @@ import { Hono } from 'hono'
 import { serve } from '@hono/node-server'
 import type { OpenAPI } from 'openapi-types'
 import { getExampleFromSchema } from '@scalar/api-reference'
+import { getOperationByMethodAndPath } from './utils'
 
 function readFile(file: string) {
   try {
@@ -340,19 +341,20 @@ program
       app.all('/*', (c) => {
         const { method, path } = c.req
 
+        const operation = getOperationByMethodAndPath(schema, method, path)
+
         console.log(
           `${kleur.bold()[getMethodColor(method)](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
+          `${kleur.grey('→')} ${operation?.operationId ? kleur.white(operation.operationId) : kleur.red('[ERROR] 404 Not Found')}`,
         )
 
-        if (!schema.paths?.[path]) {
+        if (!operation) {
           return c.text('Not found', 404)
         }
 
-        const operation = schema.paths[path]?.[method.toLowerCase()]
-
-        if (!operation) {
-          return c.text('Method not allowed', 405)
-        }
+        // if (!operation) {
+        //   return c.text('Method not allowed', 405)
+        // }
 
         const jsonResponseConfiguration =
           operation.responses['200'].content['application/json']

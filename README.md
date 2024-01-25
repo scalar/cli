@@ -41,6 +41,28 @@ scalar share openapi.json
 
 This will upload your OpenAPI file to the [Scalar Sandbox](https://sandbox.scalar.com/) to give you a public reference URL and a public URL to your OpenAPI JSON file.
 
+### mock
+
+We can even mock your API, and it’s just one command:
+
+```bash
+scalar mock openapi.json
+```
+
+This will boot up a server on port 3000 which gives you an API returning the dummy data according to your schema.
+
+If you’d like to watch for file changes (to the OpenAPI file), do it like this:
+
+```bash
+scalar mock openapi.json --watch
+```
+
+You can also change the port like this:
+
+```bash
+scalar mock openapi.json --watch --port 8080
+```
+
 ### init
 
 If you’re tired of passing the file name again and again, just configure it once:

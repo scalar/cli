@@ -289,86 +289,98 @@ program
   .description('Mock an API from an OpenAPI file')
   .argument('[file]', 'OpenAPI file to mock the server for')
   .option('-w, --watch', 'watch the file for changes')
-  .action(async (fileArgument: string, { watch }: { watch?: boolean }) => {
-    const file = getFileFromConfiguration(fileArgument)
+  .option('-p, --port <port>', 'set the HTTP port for the mock server')
+  .action(
+    async (
+      fileArgument: string,
+      { watch, port }: { watch?: boolean; port?: number },
+    ) => {
+      const file = getFileFromConfiguration(fileArgument)
 
-    let schema = await getOpenApiFile(file)
+      let schema = await getOpenApiFile(file)
 
-    // watch file for changes
-    if (watch) {
-      fs.watchFile(file, async () => {
+      // watch file for changes
+      if (watch) {
+        fs.watchFile(file, async () => {
+          console.log(
+            kleur.bold().white('[INFO]'),
+            kleur.grey('Mock Server was updated.'),
+          )
+          schema = await getOpenApiFile(file)
+        })
+      }
+
+      console.log(kleur.bold().white('Available Paths'))
+      console.log()
+
+      if (
+        schema?.paths === undefined ||
+        Object.keys(schema?.paths).length === 0
+      ) {
         console.log(
-          kleur.bold().white('[INFO]'),
-          kleur.grey('Mock Server was updated.'),
+          kleur.bold().yellow('[WARN]'),
+          kleur.grey('Couldn’t find any paths in the OpenAPI file.'),
         )
-        schema = await getOpenApiFile(file)
-      })
-    }
+      }
 
-    console.log(kleur.bold().white('Available Paths'))
-    console.log()
+      // loop through all paths
+      for (const path in schema?.paths ?? []) {
+        // loop through all methods
+        for (const method in schema.paths?.[path]) {
+          console.log(
+            `${kleur.bold()[getMethodColor(method)](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
+          )
+        }
+      }
 
-    if (
-      schema?.paths === undefined ||
-      Object.keys(schema?.paths).length === 0
-    ) {
-      console.log(
-        kleur.bold().yellow('[WARN]'),
-        kleur.grey('Couldn’t find any paths in the OpenAPI file.'),
-      )
-    }
+      console.log()
 
-    // loop through all paths
-    for (const path in schema?.paths ?? []) {
-      // loop through all methods
-      for (const method in schema.paths?.[path]) {
+      const app = new Hono()
+
+      app.all('/*', (c) => {
+        const { method, path } = c.req
+
         console.log(
           `${kleur.bold()[getMethodColor(method)](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
         )
-      }
-    }
 
-    console.log()
+        if (!schema.paths?.[path]) {
+          return c.text('Not found', 404)
+        }
 
-    const app = new Hono()
+        const operation = schema.paths[path]?.[method.toLowerCase()]
 
-    app.all('/*', (c) => {
-      const { method, path } = c.req
+        if (!operation) {
+          return c.text('Method not allowed', 405)
+        }
 
-      console.log(
-        `${kleur.bold()[getMethodColor(method)](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
+        const jsonResponseConfiguration =
+          operation.responses['200'].content['application/json']
+
+        const response = jsonResponseConfiguration.example
+          ? jsonResponseConfiguration.example
+          : jsonResponseConfiguration.schema
+            ? getExampleFromSchema(jsonResponseConfiguration.schema, {
+                emptyString: '…',
+              })
+            : null
+
+        return c.json(response)
+      })
+
+      serve(
+        {
+          fetch: app.fetch,
+          port: port ?? 3000,
+        },
+        (info) => {
+          console.log(
+            `${kleur.bold().green('➜ Mock Server')} ${kleur.white('listening on')} ${kleur.cyan(`http://localhost:${info.port}`)}`,
+          )
+          console.log()
+        },
       )
-
-      if (!schema.paths?.[path]) {
-        return c.text('Not found', 404)
-      }
-
-      const operation = schema.paths[path]?.[method.toLowerCase()]
-
-      if (!operation) {
-        return c.text('Method not allowed', 405)
-      }
-
-      const jsonResponseConfiguration =
-        operation.responses['200'].content['application/json']
-
-      const response = jsonResponseConfiguration.example
-        ? jsonResponseConfiguration.example
-        : jsonResponseConfiguration.schema
-          ? getExampleFromSchema(jsonResponseConfiguration.schema, {
-              emptyString: '…',
-            })
-          : null
-
-      return c.json(response)
-    })
-
-    serve(app, () => {
-      console.log(
-        `${kleur.bold().green('➜ Mock Server')} ${kleur.white('listening on')} ${kleur.cyan('http://localhost:3000')}`,
-      )
-      console.log()
-    })
-  })
+    },
+  )
 
 program.parse()

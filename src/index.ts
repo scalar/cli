@@ -7,6 +7,10 @@ import kleur from 'kleur'
 import prettyjson from 'prettyjson'
 import toml from 'toml-js'
 import prompts from 'prompts'
+import { Hono } from 'hono'
+import { serve } from '@hono/node-server'
+import type { OpenAPI } from 'openapi-types'
+import { getExampleFromSchema } from '@scalar/api-reference'
 
 function readFile(file: string) {
   try {
@@ -16,7 +20,24 @@ function readFile(file: string) {
   }
 }
 
-function getFileFromConfiguration(fallback?: string) {
+function getMethodColor(method: string) {
+  const colors = {
+    get: 'green',
+    post: 'cyan',
+    put: 'yellow',
+    delete: 'red',
+    patch: 'magenta',
+  }
+
+  return colors[method.toLowerCase()] ?? 'grey'
+}
+
+function getFileFromConfiguration(file?: string) {
+  // If file is empty, throw an exception
+  if (file) {
+    return file
+  }
+
   // Try to load the configuration
   try {
     const configuration = toml.parse(fs.readFileSync('scalar.toml', 'utf8'))
@@ -26,21 +47,16 @@ function getFileFromConfiguration(fallback?: string) {
     }
   } catch {}
 
-  // If fallback is empty, throw an exception
-  if (!fallback) {
-    console.error(kleur.red('No file provided.'))
-    console.log()
-    console.log(
-      kleur.white(
-        'Try `scalar init` or add the file as an argument. Read `scalar --help` for more information.',
-      ),
-    )
-    console.log()
+  console.error(kleur.red('No file provided.'))
+  console.log()
+  console.log(
+    kleur.white(
+      'Try `scalar init` or add the file as an argument. Read `scalar --help` for more information.',
+    ),
+  )
+  console.log()
 
-    process.exit(1)
-  }
-
-  return fallback
+  process.exit(1)
 }
 
 const program = new Command()
@@ -251,6 +267,79 @@ program
         console.log()
         process.exit(1)
       })
+  })
+
+program
+  .command('mock')
+  .description('Mock an API from an OpenAPI file')
+  .argument('[file]', 'file to validate')
+  .action(async (fileArgument: string) => {
+    const file = getFileFromConfiguration(fileArgument)
+
+    const validator = new Validator()
+    const result = await validator.validate(file)
+    if (!result.valid) {
+      console.log()
+      console.error(kleur.red(`File doesn’t match the OpenAPI specification.`))
+      process.exit(1)
+    }
+
+    const schema = validator.resolveRefs() as OpenAPI.Document
+
+    console.log(kleur.bold().white('Available Paths'))
+    console.log()
+
+    // loop through all paths
+    for (const path in schema.paths) {
+      // loop through all methods
+      for (const method in schema.paths[path]) {
+        console.log(
+          `${kleur.bold()[getMethodColor(method)](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
+        )
+      }
+    }
+
+    console.log()
+
+    const app = new Hono()
+
+    app.all('/*', (c) => {
+      const { method, path } = c.req
+
+      console.log(
+        `${kleur.bold()[getMethodColor(method)](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
+      )
+
+      if (!schema.paths?.[path]) {
+        return c.text('Not found', 404)
+      }
+
+      const operation = schema.paths[path]?.[method.toLowerCase()]
+
+      if (!operation) {
+        return c.text('Method not allowed', 405)
+      }
+
+      const jsonResponseConfiguration =
+        operation.responses['200'].content['application/json']
+
+      const response = jsonResponseConfiguration.example
+        ? jsonResponseConfiguration.example
+        : jsonResponseConfiguration.schema
+          ? getExampleFromSchema(jsonResponseConfiguration.schema, {
+              emptyString: '…',
+            })
+          : null
+
+      return c.json(response)
+    })
+
+    serve(app, () => {
+      console.log(
+        `${kleur.bold().green('➜ Mock Server')} ${kleur.white('listening on')} ${kleur.cyan('http://localhost:3000')}`,
+      )
+      console.log()
+    })
   })
 
 program.parse()

@@ -21,7 +21,6 @@ const config = [
       del({
         targets: [
           'dist/src',
-          'dist/tsconfig.tsbuildinfo',
         ]
       })
     ]

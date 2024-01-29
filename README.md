@@ -88,3 +88,19 @@ scalar --version
 ```bash
 scalar --help
 ```
+
+## Development
+
+Set up the development environment:
+
+```bash
+pnpm install
+pnpm @scalar/cli --version
+```
+
+To symlink the package and use it globally on your machine:
+
+```bash
+pnpm cli:link
+scalar --version
+```

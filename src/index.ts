@@ -4,7 +4,7 @@ import { Command } from 'commander'
 import fs from 'node:fs'
 import { Validator } from '@seriousme/openapi-schema-validator'
 import { format } from 'prettier'
-// import meta from '../package.json'
+import { version } from '../package.json'
 import kleur from 'kleur'
 import prettyjson from 'prettyjson'
 import toml from 'toml-js'
@@ -97,17 +97,7 @@ const program = new Command()
 program
   .name('@scalar/cli')
   .description('CLI to work with your OpenAPI files')
-  .version('0.8.0')
-
-program
-  .option('-v, --version')
-  .description('Version of the CLI')
-  .action(() => {
-    if (program.opts().version) {
-      console.log('0.1.0')
-      // console.log(meta.version)
-    }
-  })
+  .version(version)
 
 program
   .command('init')

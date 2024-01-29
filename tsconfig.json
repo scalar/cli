@@ -3,10 +3,16 @@
       "tsBuildInfoFile": null,
       "composite": true,
       "skipLibCheck": true,
-      "module": "ESNext",
-      "moduleResolution": "bundler",
+      "resolveJsonModule": true,
+      "moduleResolution": "Node",
+      "esModuleInterop": true,
+      "module": "esnext",
       "allowSyntheticDefaultImports": true,
-      "outDir": "dist"
+      "outDir": "dist",
+      "sourceMap": false
     },
-    "include": ["src", "../package.json"]
+    "include": [
+      "src/**/*",
+      "./package.json",
+    ]
   }

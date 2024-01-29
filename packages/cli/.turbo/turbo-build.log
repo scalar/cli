@@ -1,0 +1,23 @@
+
+> @scalar/cli@0.0.0 build /home/runner/work/cli/cli/packages/cli
+> rm -Rf dist/ && tsc && rollup -c
+
+[36m
+[1msrc/index.ts[22m → [1mdist[22m...[39m
+[1m[33m(!) Unresolved dependencies[39m[22m
+[90mhttps://rollupjs.org/troubleshooting/#warning-treating-module-as-external-dependency[39m
+[1mcommander[22m (imported by "src/index.ts", "src/commands/init/InitCommand.ts", "src/commands/format/FormatCommand.ts", "src/commands/mock/MockCommand.ts", "src/commands/reference/ReferenceCommand.ts", "src/commands/share/ShareCommand.ts" and "src/commands/validate/ValidateCommand.ts")
+[1mnode:fs[22m (imported by "src/commands/init/InitCommand.ts", "src/commands/format/FormatCommand.ts", "src/commands/mock/MockCommand.ts", "src/commands/reference/ReferenceCommand.ts" and "src/utils/readFile.ts")
+[1mkleur[22m (imported by "src/commands/init/InitCommand.ts", "src/commands/format/FormatCommand.ts", "src/commands/mock/MockCommand.ts", "src/commands/reference/ReferenceCommand.ts", "src/commands/share/ShareCommand.ts", "src/commands/validate/ValidateCommand.ts", "src/utils/useGivenFileOrConfiguration.ts" and "src/utils/loadOpenApiFile.ts")
+[1mprompts[22m (imported by "src/commands/init/InitCommand.ts")
+[1mtoml-js[22m (imported by "src/commands/init/InitCommand.ts" and "src/utils/useGivenFileOrConfiguration.ts")
+[1mprettier[22m (imported by "src/commands/format/FormatCommand.ts")
+[1m@hono/node-server[22m (imported by "src/commands/mock/MockCommand.ts" and "src/commands/reference/ReferenceCommand.ts")
+[1m@scalar/api-reference[22m (imported by "src/commands/mock/MockCommand.ts")
+[1mhono[22m (imported by "src/commands/mock/MockCommand.ts" and "src/commands/reference/ReferenceCommand.ts")
+[1mhono/streaming[22m (imported by "src/commands/reference/ReferenceCommand.ts")
+[1m@seriousme/openapi-schema-validator[22m (imported by "src/commands/validate/ValidateCommand.ts" and "src/utils/loadOpenApiFile.ts")
+[1mprettyjson[22m (imported by "src/commands/validate/ValidateCommand.ts")
+[1m[33m(!) Circular dependency[39m[22m
+src/utils/index.ts -> src/utils/useGivenFileOrConfiguration.ts -> src/utils/index.ts
+[32mcreated [1mdist[22m in [1m3.9s[22m[39m

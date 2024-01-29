@@ -1,0 +1,3 @@
+# Scalar CLI
+
+WIP :)

@@ -14,133 +14,14 @@ import prettyjson from 'prettyjson'
 import prompts from 'prompts'
 import toml from 'toml-js'
 import { version } from '../package.json'
-import { getOperationByMethodAndPath } from './utils'
-
-function readFile(file: string) {
-  try {
-    return fs.readFileSync(file, 'utf8')
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-async function loadOpenApiFile(file: string) {
-  const validator = new Validator()
-  const result = await validator.validate(file)
-
-  if (result.valid) {
-    const schema = validator.resolveRefs() as OpenAPI.Document
-
-    console.log(
-      kleur.bold().white('[INFO]'),
-      kleur.bold().white(schema.info.title),
-      kleur.grey(`(OpenAPI v${validator.version})`),
-    )
-    // Stats
-    const pathsCount = Object.keys(schema.paths).length
-
-    let operationsCount = 0
-    for (const path in schema.paths) {
-      for (const method in schema.paths[path]) {
-        operationsCount++
-      }
-    }
-
-    console.log(
-      kleur.bold().white('[INFO]'),
-      kleur.grey(`${pathsCount} paths, ${operationsCount} operations`),
-    )
-
-    console.log()
-  } else {
-    console.warn(
-      kleur.bold().yellow('[WARN]'),
-      kleur.yellow('File doesn’t match the OpenAPI specification.'),
-    )
-    console.log()
-  }
-
-  return validator
-}
-
-function getMethodColor(method: string) {
-  const colors = {
-    get: 'green',
-    post: 'cyan',
-    put: 'yellow',
-    delete: 'red',
-    patch: 'magenta',
-  }
-
-  return colors[method.toLowerCase()] ?? 'grey'
-}
-
-function getHtmlDocument(specification: OpenAPI.Document, watch = false) {
-  return `<!doctype html>
-  <html>
-    <head>
-      <title>API Reference</title>
-      <meta charset="utf-8" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1" />
-      <style>
-        body {
-          margin: 0;
-        }
-      </style>
-      ${
-        watch
-          ? `
-            <script>
-              const evtSource = new EventSource('__watcher');
-              evtSource.onmessage = (event) => {
-                console.log(\`message: \${event.data}\`);
-                window.location.reload();
-              };
-            </script>
-          `
-          : ''
-      }
-    </head>
-    <body>
-      <script
-        id="api-reference"
-        type="application/json"
-        data-proxy-url="https://api.scalar.com/request-proxy">${JSON.stringify(
-          specification,
-        )}</script>
-      <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
-    </body>
-  </html>`
-}
-
-function useGivenFileOrConfiguration(file?: string) {
-  // If a specific file is given, use it.
-  if (file) {
-    return file
-  }
-
-  // Try to load the configuration
-  try {
-    const configuration = toml.parse(readFile('scalar.toml'))
-
-    if (configuration?.reference?.file) {
-      return configuration.reference.file
-    }
-  } catch {}
-
-  console.error(kleur.red('No file provided.'))
-  console.log()
-  console.log(
-    kleur.white(
-      'Try `scalar init` or add the file as an argument. Read `scalar --help` for more information.',
-    ),
-  )
-  console.log()
-
-  process.exit(1)
-}
+import {
+  getHtmlDocument,
+  getMethodColor,
+  getOperationByMethodAndPath,
+  loadOpenApiFile,
+  readFile,
+  useGivenFileOrConfiguration,
+} from './utils'
 
 const program = new Command()
 

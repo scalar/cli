@@ -1,1 +1,6 @@
+export * from './getHtmlDocument'
+export * from './getMethodColor'
 export * from './getOperationByMethodAndPath'
+export * from './loadOpenApiFile'
+export * from './readFile'
+export * from './useGivenFileOrConfiguration'

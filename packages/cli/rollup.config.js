@@ -13,7 +13,7 @@ const config = [
     plugins: [
       json(),
       typescript({
-        include: ['src/**/*', 'package.json', "tests/**/*"],
+        include: ['src/**/*', 'package.json', 'tests/**/*'],
       }),
       del({
         targets: ['dist/src', 'dist/tests'],

@@ -6,6 +6,7 @@ import { getExampleFromSchema } from '@scalar/api-reference'
 import { Validator } from '@seriousme/openapi-schema-validator'
 import { Command } from 'commander'
 import { Hono } from 'hono'
+import { stream } from 'hono/streaming'
 import kleur from 'kleur'
 import type { OpenAPI } from 'openapi-types'
 import { format } from 'prettier'
@@ -14,7 +15,6 @@ import prompts from 'prompts'
 import toml from 'toml-js'
 import { version } from '../package.json'
 import { getOperationByMethodAndPath } from './utils'
-import { stream } from 'hono/streaming'
 
 function readFile(file: string) {
   try {

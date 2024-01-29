@@ -1,5 +1,5 @@
-import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
+import typescript from '@rollup/plugin-typescript'
 import del from 'rollup-plugin-delete'
 
 const config = [
@@ -13,18 +13,13 @@ const config = [
     plugins: [
       json(),
       typescript({
-        include: [
-          'src/**/*',
-          'package.json',
-        ],
+        include: ['src/**/*', 'package.json'],
       }),
       del({
-        targets: [
-          'dist/src',
-        ]
-      })
-    ]
-  }
+        targets: ['dist/src'],
+      }),
+    ],
+  },
 ]
 
 export default config

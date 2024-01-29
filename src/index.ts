@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
-import { Command } from 'commander'
 import fs from 'node:fs'
-import { Validator } from '@seriousme/openapi-schema-validator'
-import { format } from 'prettier'
-import { version } from '../package.json'
-import kleur from 'kleur'
-import prettyjson from 'prettyjson'
-import toml from 'toml-js'
-import prompts from 'prompts'
-import { Hono } from 'hono'
 import { serve } from '@hono/node-server'
-import type { OpenAPI } from 'openapi-types'
 import { getExampleFromSchema } from '@scalar/api-reference'
+import { Validator } from '@seriousme/openapi-schema-validator'
+import { Command } from 'commander'
+import { Hono } from 'hono'
+import kleur from 'kleur'
+import type { OpenAPI } from 'openapi-types'
+import { format } from 'prettier'
+import prettyjson from 'prettyjson'
+import prompts from 'prompts'
+import toml from 'toml-js'
+import { version } from '../package.json'
 import { getOperationByMethodAndPath } from './utils'
 
 function readFile(file: string) {
@@ -30,7 +30,7 @@ async function getOpenApiFile(file: string) {
   if (!result.valid) {
     console.warn(
       kleur.bold().yellow('[WARN]'),
-      kleur.yellow(`File doesn’t match the OpenAPI specification.`),
+      kleur.yellow('File doesn’t match the OpenAPI specification.'),
     )
     console.log()
   }
@@ -45,7 +45,7 @@ async function getRawOpenApiFile(file: string) {
   if (!result.valid) {
     console.warn(
       kleur.bold().yellow('[WARN]'),
-      kleur.yellow(`File doesn’t match the OpenAPI specification.`),
+      kleur.yellow('File doesn’t match the OpenAPI specification.'),
     )
     console.log()
   }
@@ -148,7 +148,7 @@ program
     const content = toml.dump(configuration)
 
     console.log()
-    console.log(kleur.bold().white(`    scalar.toml`))
+    console.log(kleur.bold().white('    scalar.toml'))
     console.log()
     console.log(
       content
@@ -162,10 +162,12 @@ program
     // Create `scalar.toml` file
     fs.writeFileSync('scalar.toml', content)
 
-    console.log(kleur.green(`Created a new project configuration.`))
+    console.log(kleur.green('Created a new project configuration.'))
     console.log(
       kleur.white(
-        `Run ${kleur.grey().bold('scalar --help')} to see all available commands.`,
+        `Run ${kleur
+          .grey()
+          .bold('scalar --help')} to see all available commands.`,
       ),
     )
     console.log()
@@ -198,9 +200,11 @@ program
     const endTime = performance.now()
 
     console.log(
-      kleur.green(`File formatted`),
+      kleur.green('File formatted'),
       kleur.grey(
-        `in ${kleur.white(`${kleur.bold(`${Math.round(endTime - startTime)}`)} ms`)}`,
+        `in ${kleur.white(
+          `${kleur.bold(`${Math.round(endTime - startTime)}`)} ms`,
+        )}`,
       ),
     )
     console.log()
@@ -220,7 +224,9 @@ program
     if (result.valid) {
       console.log(
         kleur.green(
-          `Matches the OpenAPI specification${kleur.white(` (OpenAPI ${kleur.bold(validator.version)})`)}`,
+          `Matches the OpenAPI specification${kleur.white(
+            ` (OpenAPI ${kleur.bold(validator.version)})`,
+          )}`,
         ),
       )
 
@@ -228,20 +234,26 @@ program
 
       console.log()
       console.log(
-        kleur.green(`File validated`),
+        kleur.green('File validated'),
         kleur.grey(
-          `in ${kleur.white(`${kleur.bold(`${Math.round(endTime - startTime)}`)} ms`)}`,
+          `in ${kleur.white(
+            `${kleur.bold(`${Math.round(endTime - startTime)}`)} ms`,
+          )}`,
         ),
       )
       console.log()
     } else {
       console.log(prettyjson.render(result.errors))
       console.log()
-      console.error(kleur.red(`File doesn’t match the OpenAPI specification.`))
+      console.error(kleur.red('File doesn’t match the OpenAPI specification.'))
       console.log()
       console.error(
         kleur.red(
-          `${kleur.bold(`${result.errors?.length} error${result.errors && result.errors.length > 1 ? 's' : ''}`)} found.`,
+          `${kleur.bold(
+            `${result.errors?.length} error${
+              result.errors && result.errors.length > 1 ? 's' : ''
+            }`,
+          )} found.`,
         ),
       )
       console.log()
@@ -273,17 +285,33 @@ program
         console.log(kleur.bold().green('Your OpenAPI file is public.'))
         console.log()
         console.log(
-          `${kleur.green('➜')} ${kleur.bold().white('API Reference:'.padEnd(14))} ${kleur.cyan(`https://sandbox.scalar.com/p/${id}`)}`,
+          `${kleur.green('➜')} ${kleur
+            .bold()
+            .white('API Reference:'.padEnd(14))} ${kleur.cyan(
+            `https://sandbox.scalar.com/p/${id}`,
+          )}`,
         )
         console.log(
-          `${kleur.grey('➜')} ${kleur.bold().grey('Editor:'.padEnd(14))} ${kleur.cyan(`https://sandbox.scalar.com/e/${id}`)}`,
+          `${kleur.grey('➜')} ${kleur
+            .bold()
+            .grey('Editor:'.padEnd(14))} ${kleur.cyan(
+            `https://sandbox.scalar.com/e/${id}`,
+          )}`,
         )
         console.log()
         console.log(
-          `${kleur.grey('➜')} ${kleur.bold().grey('OpenAPI JSON:'.padEnd(14))} ${kleur.cyan(`https://sandbox.scalar.com/files/${id}/openapi.json`)}`,
+          `${kleur.grey('➜')} ${kleur
+            .bold()
+            .grey('OpenAPI JSON:'.padEnd(14))} ${kleur.cyan(
+            `https://sandbox.scalar.com/files/${id}/openapi.json`,
+          )}`,
         )
         console.log(
-          `${kleur.grey('➜')} ${kleur.bold().grey('OpenAPI YAML:'.padEnd(14))} ${kleur.cyan(`https://sandbox.scalar.com/files/${id}/openapi.yaml`)}`,
+          `${kleur.grey('➜')} ${kleur
+            .bold()
+            .grey('OpenAPI YAML:'.padEnd(14))} ${kleur.cyan(
+            `https://sandbox.scalar.com/files/${id}/openapi.yaml`,
+          )}`,
         )
         console.log()
       })
@@ -340,7 +368,11 @@ program
         // loop through all methods
         for (const method in schema.paths?.[path]) {
           console.log(
-            `${kleur.bold()[getMethodColor(method)](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
+            `${kleur
+              .bold()
+              [getMethodColor(method)](
+                method.toUpperCase().padEnd(6),
+              )} ${kleur.grey(`${path}`)}`,
           )
         }
       }
@@ -355,8 +387,16 @@ program
         const operation = getOperationByMethodAndPath(schema, method, path)
 
         console.log(
-          `${kleur.bold()[getMethodColor(method)](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
-          `${kleur.grey('→')} ${operation?.operationId ? kleur.white(operation.operationId) : kleur.red('[ERROR] 404 Not Found')}`,
+          `${kleur
+            .bold()
+            [getMethodColor(method)](
+              method.toUpperCase().padEnd(6),
+            )} ${kleur.grey(`${path}`)}`,
+          `${kleur.grey('→')} ${
+            operation?.operationId
+              ? kleur.white(operation.operationId)
+              : kleur.red('[ERROR] 404 Not Found')
+          }`,
         )
 
         if (!operation) {
@@ -388,7 +428,9 @@ program
         },
         (info) => {
           console.log(
-            `${kleur.bold().green('➜ Mock Server')} ${kleur.white('listening on')} ${kleur.cyan(`http://localhost:${info.port}`)}`,
+            `${kleur.bold().green('➜ Mock Server')} ${kleur.white(
+              'listening on',
+            )} ${kleur.cyan(`http://localhost:${info.port}`)}`,
           )
           console.log()
         },
@@ -453,7 +495,9 @@ program
             <script
               id="api-reference"
               type="application/json"
-              data-proxy-url="https://api.scalar.com/request-proxy">${JSON.stringify(specification)}</script>
+              data-proxy-url="https://api.scalar.com/request-proxy">${JSON.stringify(
+                specification,
+              )}</script>
             <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
           </body>
         </html>`)
@@ -466,7 +510,9 @@ program
         },
         (info) => {
           console.log(
-            `${kleur.bold().green('➜ API Reference Server')} ${kleur.white('listening on')} ${kleur.cyan(`http://localhost:${info.port}`)}`,
+            `${kleur.bold().green('➜ API Reference Server')} ${kleur.white(
+              'listening on',
+            )} ${kleur.cyan(`http://localhost:${info.port}`)}`,
           )
           console.log()
         },

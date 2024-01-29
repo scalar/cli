@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
-import { getOperationByMethodAndPath } from './getOperationByMethodAndPath'
 import type { OpenAPI } from 'openapi-types'
+import { describe, expect, it } from 'vitest'
+import { getOperationByMethodAndPath } from './getOperationByMethodAndPath'
 
 describe('getOperationByMethodAndPath', () => {
   it('matches plain strings', () => {

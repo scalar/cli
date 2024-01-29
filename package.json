@@ -3,6 +3,8 @@
 	"scripts": {
 		"@scalar/cli": "pnpm vite-node src/index.ts",
 		"test": "vitest",
+		"lint": "pnpm dlx @biomejs/biome lint .",
+		"format": "pnpm dlx @biomejs/biome check . --apply",
 		"cli:link": "pnpm run build && npm unlink -g && npm link",
 		"build": "rm -Rf dist/ && tsc && rollup -c"
 	},
@@ -30,6 +32,7 @@
 		"vitest": "^1.2.1"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.5.3",
 		"@rollup/plugin-json": "^6.1.0",
 		"@rollup/plugin-typescript": "^11.1.6",
 		"@types/node": "^20.11.5",

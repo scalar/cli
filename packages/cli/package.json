@@ -1,11 +1,21 @@
 {
     "name": "@scalar/cli",
+    "description": "A command-line interface to work with OpenAPI files",
+    "license": "MIT",
+    "author": "Scalar (https://github.com/scalar)",
+    "homepage": "https://github.com/scalar/scalar",
+    "bugs": "https://github.com/scalar/scalar/issues/new/choose",
+    "keywords": ["scalar", "openapi", "swagger", "cli"],
+    "engines": {
+        "node": ">=18"
+    },
     "scripts": {
         "@scalar/cli": "pnpm vite-node src/index.ts",
         "test": "vitest",
         "lint": "pnpm dlx @biomejs/biome lint .",
         "format": "pnpm dlx @biomejs/biome check . --apply",
         "cli:link": "pnpm run build && npm unlink -g && npm link",
+        "types:check": "tsc --noEmit --skipLibCheck",
         "build": "rm -Rf dist/ && tsc && rollup -c"
     },
     "type": "module",

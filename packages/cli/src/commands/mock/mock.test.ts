@@ -1,6 +1,6 @@
+import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { ScalarCli } from '../../../tests/invoke-cli'
-import path from 'node:path'
 
 // TODO: Long running process
 describe.skip('mock', () => {

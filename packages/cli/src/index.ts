@@ -24,11 +24,35 @@ function readFile(file: string) {
   }
 }
 
-async function getOpenApiFile(file: string) {
+async function loadOpenApiFile(file: string) {
   const validator = new Validator()
   const result = await validator.validate(file)
 
-  if (!result.valid) {
+  if (result.valid) {
+    const schema = validator.resolveRefs() as OpenAPI.Document
+
+    console.log(
+      kleur.bold().white('[INFO]'),
+      kleur.bold().white(schema.info.title),
+      kleur.grey(`(OpenAPI v${validator.version})`),
+    )
+    // Stats
+    const pathsCount = Object.keys(schema.paths).length
+
+    let operationsCount = 0
+    for (const path in schema.paths) {
+      for (const method in schema.paths[path]) {
+        operationsCount++
+      }
+    }
+
+    console.log(
+      kleur.bold().white('[INFO]'),
+      kleur.grey(`${pathsCount} paths, ${operationsCount} operations`),
+    )
+
+    console.log()
+  } else {
     console.warn(
       kleur.bold().yellow('[WARN]'),
       kleur.yellow('File doesn’t match the OpenAPI specification.'),
@@ -36,22 +60,7 @@ async function getOpenApiFile(file: string) {
     console.log()
   }
 
-  return validator.resolveRefs() as Promise<OpenAPI.Document>
-}
-
-async function getRawOpenApiFile(file: string) {
-  const validator = new Validator()
-  const result = await validator.validate(file)
-
-  if (!result.valid) {
-    console.warn(
-      kleur.bold().yellow('[WARN]'),
-      kleur.yellow('File doesn’t match the OpenAPI specification.'),
-    )
-    console.log()
-  }
-
-  return validator.specification as Promise<OpenAPI.Document>
+  return validator
 }
 
 function getMethodColor(method: string) {
@@ -106,7 +115,7 @@ function getHtmlDocument(specification: OpenAPI.Document, watch = false) {
   </html>`
 }
 
-function getFileFromConfiguration(file?: string) {
+function useGivenFileOrConfiguration(file?: string) {
   // If a specific file is given, use it.
   if (file) {
     return file
@@ -114,7 +123,7 @@ function getFileFromConfiguration(file?: string) {
 
   // Try to load the configuration
   try {
-    const configuration = toml.parse(fs.readFileSync('scalar.toml', 'utf8'))
+    const configuration = toml.parse(readFile('scalar.toml'))
 
     if (configuration?.reference?.file) {
       return configuration.reference.file
@@ -223,7 +232,7 @@ program
   .action(async (fileArgument: string) => {
     const startTime = performance.now()
 
-    const file = getFileFromConfiguration(fileArgument)
+    const file = useGivenFileOrConfiguration(fileArgument)
 
     const fileContent = readFile(file)
 
@@ -260,7 +269,7 @@ program
   .action(async (fileArgument: string) => {
     const startTime = performance.now()
 
-    const file = getFileFromConfiguration(fileArgument)
+    const file = useGivenFileOrConfiguration(fileArgument)
 
     const validator = new Validator()
     const result = await validator.validate(file)
@@ -310,7 +319,7 @@ program
   .description('Share an OpenAPI file')
   .argument('[file]', 'file to share')
   .action(async (fileArgument: string) => {
-    const file = getFileFromConfiguration(fileArgument)
+    const file = useGivenFileOrConfiguration(fileArgument)
 
     fetch('https://sandbox.scalar.com/api/share', {
       method: 'POST',
@@ -378,9 +387,11 @@ program
       fileArgument: string,
       { watch, port }: { watch?: boolean; port?: number },
     ) => {
-      const file = getFileFromConfiguration(fileArgument)
+      const file = useGivenFileOrConfiguration(fileArgument)
 
-      let schema = await getOpenApiFile(file)
+      let schema = (
+        await loadOpenApiFile(file)
+      ).resolveRefs() as OpenAPI.Document
 
       // watch file for changes
       if (watch) {
@@ -389,7 +400,9 @@ program
             kleur.bold().white('[INFO]'),
             kleur.grey('Mock Server was updated.'),
           )
-          schema = await getOpenApiFile(file)
+          schema = (
+            await loadOpenApiFile(file)
+          ).resolveRefs() as OpenAPI.Document
         })
       }
 
@@ -492,9 +505,10 @@ program
       fileArgument: string,
       { watch, port }: { watch?: boolean; port?: number },
     ) => {
-      const file = getFileFromConfiguration(fileArgument)
+      const file = useGivenFileOrConfiguration(fileArgument)
 
-      let specification = await getRawOpenApiFile(file)
+      let specification = (await loadOpenApiFile(file))
+        .specification as OpenAPI.Document
 
       if (
         specification?.paths === undefined ||
@@ -530,7 +544,8 @@ program
                 kleur.grey('OpenAPI file modified'),
               )
 
-              specification = await getRawOpenApiFile(file)
+              specification = (await loadOpenApiFile(file))
+                .specification as OpenAPI.Document
 
               stream.write('data: file modified\n\n')
             })

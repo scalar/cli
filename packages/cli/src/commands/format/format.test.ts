@@ -1,7 +1,7 @@
+import fs from 'node:fs'
+import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { ScalarCli } from '../../../tests/invoke-cli'
-import path from 'node:path'
-import fs from 'node:fs'
 
 describe('format', () => {
   it('formats the given file', () => {

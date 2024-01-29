@@ -107,7 +107,7 @@ function getHtmlDocument(specification: OpenAPI.Document, watch = false) {
 }
 
 function getFileFromConfiguration(file?: string) {
-  // If file is empty, throw an exception
+  // If a specific file is given, use it.
   if (file) {
     return file
   }
@@ -141,7 +141,9 @@ program
   .version(version)
 
 program
-  .command('init')
+  .command('init', {
+    isDefault: true,
+  })
   .description('Create a new `scalar.toml` file')
   .option('-f, --file [file]', 'your OpenAPI file')
   .action(async ({ file }) => {

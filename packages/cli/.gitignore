@@ -1,3 +1,4 @@
-/dist
-/.rollup.cache
+dist
+.rollup.cache
 node_modules
+.turbo

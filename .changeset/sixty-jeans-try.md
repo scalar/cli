@@ -1,0 +1,5 @@
+---
+"@scalar/cli": minor
+---
+
+init :)

@@ -14,6 +14,7 @@ import prompts from 'prompts'
 import toml from 'toml-js'
 import { version } from '../package.json'
 import { getOperationByMethodAndPath } from './utils'
+import { stream } from 'hono/streaming'
 
 function readFile(file: string) {
   try {
@@ -453,17 +454,6 @@ program
 
       let specification = await getRawOpenApiFile(file)
 
-      // watch file for changes
-      if (watch) {
-        fs.watchFile(file, async () => {
-          console.log(
-            kleur.bold().white('[INFO]'),
-            kleur.grey('OpenAPI file modified'),
-          )
-          specification = await getRawOpenApiFile(file)
-        })
-      }
-
       if (
         specification?.paths === undefined ||
         Object.keys(specification?.paths).length === 0
@@ -490,6 +480,13 @@ program
                 margin: 0;
               }
             </style>
+            <script>
+              const evtSource = new EventSource('__hmr__');
+              evtSource.onmessage = (event) => {
+                console.log(\`message: \${event.data}\`);
+                window.location.reload();
+              };
+            </script>
           </head>
           <body>
             <script
@@ -501,6 +498,36 @@ program
             <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
           </body>
         </html>`)
+      })
+
+      app.use('/__hmr__', async (c, next) => {
+        c.header('Content-Type', 'text/event-stream')
+        c.header('Cache-Control', 'no-cache')
+        c.header('Connection', 'keep-alive')
+        await next()
+      })
+
+      app.get('/__hmr__', (c) => {
+        return stream(c, async (stream) => {
+          // watch file for changes
+          if (watch) {
+            console.log(`Watch ${file}`)
+            fs.watchFile(file, async () => {
+              console.log(
+                kleur.bold().white('[INFO]'),
+                kleur.grey('OpenAPI file modified'),
+              )
+
+              specification = await getRawOpenApiFile(file)
+
+              stream.write('data: file modified\n\n')
+            })
+          }
+
+          while (true) {
+            await new Promise((resolve) => setTimeout(resolve, 100))
+          }
+        })
       })
 
       serve(

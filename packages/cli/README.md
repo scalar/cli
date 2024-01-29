@@ -1,7 +1,6 @@
 # Scalar CLI
 
-> [!CAUTION]
-> WIP, not published yet
+Command-line interface to work with OpenAPI files
 
 ## Installation
 

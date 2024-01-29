@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "tsBuildInfoFile": null,
+      "composite": true,
+      "skipLibCheck": true,
+      "module": "ESNext",
+      "moduleResolution": "bundler",
+      "allowSyntheticDefaultImports": true,
+      "outDir": "dist"
+    },
+    "include": ["src", "../package.json"]
+  }

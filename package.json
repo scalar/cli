@@ -2,10 +2,17 @@
 	"name": "@scalar/cli",
 	"scripts": {
 		"@scalar/cli": "pnpm vite-node src/index.ts",
-		"test": "vitest"
+		"test": "vitest",
+		"build": "tsc && rollup -c"
 	},
 	"type": "module",
 	"version": "0.1.0",
+	"bin": {
+		"scalar": "./dist/index.js"
+	},
+	"files": [
+		"./dist"
+	],
 	"dependencies": {
 		"@hono/node-server": "^1.5.0",
 		"@scalar/api-reference": "^1.13.15",
@@ -22,6 +29,11 @@
 		"vitest": "^1.2.1"
 	},
 	"devDependencies": {
-		"@types/node": "^20.11.5"
+		"@rollup/plugin-json": "^6.1.0",
+		"@rollup/plugin-typescript": "^11.1.6",
+		"@types/node": "^20.11.5",
+		"rollup": "^4.9.6",
+		"tslib": "^2.6.2",
+		"typescript": "^5.3.3"
 	}
 }

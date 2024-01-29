@@ -1,8 +1,10 @@
+#!/usr/bin/env node
+
 import { Command } from 'commander'
 import fs from 'node:fs'
 import { Validator } from '@seriousme/openapi-schema-validator'
 import { format } from 'prettier'
-import meta from '../package.json'
+// import meta from '../package.json'
 import kleur from 'kleur'
 import prettyjson from 'prettyjson'
 import toml from 'toml-js'
@@ -87,7 +89,8 @@ program
   .description('Version of the CLI')
   .action(() => {
     if (program.opts().version) {
-      console.log(meta.version)
+      console.log('0.1.0')
+      // console.log(meta.version)
     }
   })
 

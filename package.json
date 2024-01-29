@@ -8,5 +8,8 @@
         "format": "pnpm -r format",
         "cli:link": "pnpm --filter @scalar/cli cli:link",
         "build": "pnpm -r build"
+    },
+    "dependencies": {
+        "@changesets/cli": "^2.27.1"
     }
 }

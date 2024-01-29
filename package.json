@@ -36,8 +36,10 @@
 		"@rollup/plugin-json": "^6.1.0",
 		"@rollup/plugin-typescript": "^11.1.6",
 		"@types/node": "^20.11.5",
+		"execa": "^8.0.1",
 		"rollup": "^4.9.6",
 		"rollup-plugin-delete": "^2.0.0",
+		"strip-ansi": "^7.1.0",
 		"tslib": "^2.6.2",
 		"typescript": "^5.3.3"
 	}

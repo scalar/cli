@@ -26,7 +26,7 @@
     "files": ["./dist"],
     "dependencies": {
         "@hono/node-server": "^1.5.0",
-        "@scalar/api-reference": "^1.13.15",
+        "@scalar/api-reference": "^1.14.0",
         "@seriousme/openapi-schema-validator": "^2.1.6",
         "commander": "^11.1.0",
         "hono": "^3.12.6",

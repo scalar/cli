@@ -5,12 +5,7 @@
     "author": "Scalar (https://github.com/scalar)",
     "homepage": "https://github.com/scalar/scalar",
     "bugs": "https://github.com/scalar/scalar/issues/new/choose",
-    "keywords": [
-        "scalar",
-        "openapi",
-        "swagger",
-        "cli"
-    ],
+    "keywords": ["scalar", "openapi", "swagger", "cli"],
     "engines": {
         "node": ">=18"
     },
@@ -19,6 +14,7 @@
         "test": "vitest",
         "lint": "pnpm dlx @biomejs/biome lint .",
         "format": "pnpm dlx @biomejs/biome check . --apply",
+        "format:check": "pnpm dlx @biomejs/biome check .",
         "cli:link": "pnpm run build && npm unlink -g && npm link",
         "types:check": "tsc --noEmit --skipLibCheck",
         "build": "rm -Rf dist/ && tsc && rollup -c"
@@ -28,9 +24,7 @@
     "bin": {
         "scalar": "./dist/index.js"
     },
-    "files": [
-        "./dist"
-    ],
+    "files": ["./dist"],
     "dependencies": {
         "@hono/node-server": "^1.5.0",
         "@scalar/api-reference": "^1.14.0",

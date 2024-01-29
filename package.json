@@ -6,6 +6,7 @@
         "test": "pnpm -r test",
         "lint": "pnpm -r lint",
         "format": "pnpm -r format",
+        "format:check": "pnpm -r format:check",
         "cli:link": "pnpm --filter @scalar/cli cli:link",
         "build": "pnpm -r build"
     },

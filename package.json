@@ -8,6 +8,7 @@
         "format": "pnpm -r format",
         "format:check": "pnpm -r format:check",
         "cli:link": "pnpm --filter @scalar/cli cli:link",
+        "bump": "CI=true pnpm run test && pnpm changeset version",
         "build": "pnpm -r build"
     },
     "dependencies": {

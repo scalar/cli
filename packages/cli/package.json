@@ -3,8 +3,8 @@
     "description": "A command-line interface to work with OpenAPI files",
     "license": "MIT",
     "author": "Scalar (https://github.com/scalar)",
-    "homepage": "https://github.com/scalar/scalar",
-    "bugs": "https://github.com/scalar/scalar/issues/new/choose",
+    "homepage": "https://github.com/scalar/cli",
+    "bugs": "https://github.com/scalar/cli/issues/new/choose",
     "keywords": [
         "scalar",
         "openapi",

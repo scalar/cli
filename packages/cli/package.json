@@ -37,7 +37,7 @@
         "prompts": "^2.4.2",
         "toml-js": "^0.0.8",
         "vite-node": "^1.2.1",
-        "vitest": "^1.2.1"
+        "vitest": "^1.2.2"
     },
     "devDependencies": {
         "@biomejs/biome": "1.5.3",

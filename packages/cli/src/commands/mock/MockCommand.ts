@@ -1,10 +1,10 @@
 import fs from 'node:fs'
 import { serve } from '@hono/node-server'
 import { getExampleFromSchema } from '@scalar/api-reference'
-import { Hono } from 'hono'
-import type { OpenAPI } from 'openapi-types'
 import { Command } from 'commander'
+import { Hono } from 'hono'
 import kleur from 'kleur'
+import type { OpenAPI } from 'openapi-types'
 import {
   getMethodColor,
   getOperationByMethodAndPath,

@@ -1,7 +1,7 @@
 import { Validator } from '@seriousme/openapi-schema-validator'
-import prettyjson from 'prettyjson'
 import { Command } from 'commander'
 import kleur from 'kleur'
+import prettyjson from 'prettyjson'
 import { useGivenFileOrConfiguration } from '../../utils'
 
 export function ValidateCommand() {

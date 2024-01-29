@@ -19,7 +19,7 @@ Otherwise just prefix all commands with `npx @scalar/cli` instead of `scalar`. T
 The given JSON file will be formatted with Prettier.
 
 ```bash
-scalar format openapi.json
+scalar format
 ```
 
 ### validate
@@ -27,7 +27,7 @@ scalar format openapi.json
 To check whether your OpenAPI file adheres to the Swagger 2.0, OpenAPI 3.0 or OpenAPI 3.1 specification, run the following command:
 
 ```bash
-scalar validate openapi.json
+scalar validate
 ```
 
 ### share
@@ -35,7 +35,7 @@ scalar validate openapi.json
 To quickly share an OpenAPI file or reference with someone, you can use the share command:
 
 ```bash
-scalar share openapi.json
+scalar share
 ```
 
 This will upload your OpenAPI file to the [Scalar Sandbox](https://sandbox.scalar.com/) to give you a public reference URL and a public URL to your OpenAPI JSON file.
@@ -45,7 +45,7 @@ This will upload your OpenAPI file to the [Scalar Sandbox](https://sandbox.scala
 We can even mock your API, and it’s just one command:
 
 ```bash
-scalar mock openapi.json
+scalar mock
 ```
 
 This will boot up a server on port 3000 which gives you an API returning the dummy data according to your schema.

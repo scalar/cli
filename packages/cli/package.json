@@ -5,7 +5,12 @@
     "author": "Scalar (https://github.com/scalar)",
     "homepage": "https://github.com/scalar/scalar",
     "bugs": "https://github.com/scalar/scalar/issues/new/choose",
-    "keywords": ["scalar", "openapi", "swagger", "cli"],
+    "keywords": [
+        "scalar",
+        "openapi",
+        "swagger",
+        "cli"
+    ],
     "engines": {
         "node": ">=18"
     },
@@ -23,27 +28,29 @@
     "bin": {
         "scalar": "./dist/index.js"
     },
-    "files": ["./dist"],
+    "files": [
+        "./dist"
+    ],
     "dependencies": {
         "@hono/node-server": "^1.5.0",
-        "@scalar/api-reference": "^1.13.15",
+        "@scalar/api-reference": "^1.14.0",
         "@seriousme/openapi-schema-validator": "^2.1.6",
         "commander": "^11.1.0",
-        "hono": "^3.12.6",
+        "hono": "^3.12.8",
         "kleur": "^4.1.5",
         "openapi-types": "^12.1.3",
         "prettier": "^3.2.4",
         "prettyjson": "^1.2.5",
         "prompts": "^2.4.2",
         "toml-js": "^0.0.8",
-        "vite-node": "^1.2.1",
-        "vitest": "^1.2.1"
+        "vite-node": "^1.2.2",
+        "vitest": "^1.2.2"
     },
     "devDependencies": {
         "@biomejs/biome": "1.5.3",
         "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-typescript": "^11.1.6",
-        "@types/node": "^20.11.5",
+        "@types/node": "^20.11.10",
         "execa": "^8.0.1",
         "rollup": "^4.9.6",
         "rollup-plugin-delete": "^2.0.0",

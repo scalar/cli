@@ -43,7 +43,7 @@ export function ScalarCli() {
         const execaError = e as ExecaSyncError
         return [
           execaError.exitCode,
-          createLogsMatcher(strip(execaError.stdout?.toString() || ``)),
+          createLogsMatcher(strip(execaError.stdout?.toString() || '')),
         ]
       }
     },

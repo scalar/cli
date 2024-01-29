@@ -13,10 +13,10 @@ const config = [
     plugins: [
       json(),
       typescript({
-        include: ['src/**/*', 'package.json'],
+        include: ['src/**/*', 'package.json', "tests/**/*"],
       }),
       del({
-        targets: ['dist/src'],
+        targets: ['dist/src', 'dist/tests'],
       }),
     ],
   },

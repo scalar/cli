@@ -4,82 +4,78 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-importers:
+dependencies:
+  '@hono/node-server':
+    specifier: ^1.5.0
+    version: 1.5.0
+  '@scalar/api-reference':
+    specifier: ^1.13.15
+    version: 1.13.15(@codemirror/lang-html@6.4.8)(@codemirror/lang-java@6.0.1)(@codemirror/lang-javascript@6.2.1)(@codemirror/lang-json@6.0.1)(@codemirror/lang-python@6.1.3)(@codemirror/language@6.10.0)(@codemirror/legacy-modes@6.3.3)(@codemirror/state@6.4.0)(@codemirror/view@6.23.1)(@lezer/common@1.2.1)(@lezer/highlight@1.2.0)(@lezer/lr@1.4.0)(@uiw/codemirror-themes@4.21.21)(codemirror@6.0.1)(nanoid@5.0.4)(postcss@8.4.33)(typescript@5.3.3)(unified@11.0.4)(vue@3.4.15)
+  '@seriousme/openapi-schema-validator':
+    specifier: ^2.1.6
+    version: 2.1.6
+  commander:
+    specifier: ^11.1.0
+    version: 11.1.0
+  hono:
+    specifier: ^3.12.6
+    version: 3.12.6
+  kleur:
+    specifier: ^4.1.5
+    version: 4.1.5
+  openapi-types:
+    specifier: ^12.1.3
+    version: 12.1.3
+  prettier:
+    specifier: ^3.2.4
+    version: 3.2.4
+  prettyjson:
+    specifier: ^1.2.5
+    version: 1.2.5
+  prompts:
+    specifier: ^2.4.2
+    version: 2.4.2
+  toml-js:
+    specifier: ^0.0.8
+    version: 0.0.8
+  vite-node:
+    specifier: ^1.2.1
+    version: 1.2.1(@types/node@20.11.5)
+  vitest:
+    specifier: ^1.2.1
+    version: 1.2.1(@types/node@20.11.5)
 
-  .: {}
-
-  packages/cli:
-    dependencies:
-      '@hono/node-server':
-        specifier: ^1.5.0
-        version: 1.5.0
-      '@scalar/api-reference':
-        specifier: ^1.13.15
-        version: 1.13.15(@codemirror/lang-html@6.4.8)(@codemirror/lang-java@6.0.1)(@codemirror/lang-javascript@6.2.1)(@codemirror/lang-json@6.0.1)(@codemirror/lang-python@6.1.3)(@codemirror/language@6.10.0)(@codemirror/legacy-modes@6.3.3)(@codemirror/state@6.4.0)(@codemirror/view@6.23.1)(@lezer/common@1.2.1)(@lezer/highlight@1.2.0)(@lezer/lr@1.4.0)(@uiw/codemirror-themes@4.21.21)(codemirror@6.0.1)(nanoid@5.0.4)(postcss@8.4.33)(typescript@5.3.3)(unified@11.0.4)(vue@3.4.15)
-      '@seriousme/openapi-schema-validator':
-        specifier: ^2.1.6
-        version: 2.1.6
-      commander:
-        specifier: ^11.1.0
-        version: 11.1.0
-      hono:
-        specifier: ^3.12.6
-        version: 3.12.6
-      kleur:
-        specifier: ^4.1.5
-        version: 4.1.5
-      openapi-types:
-        specifier: ^12.1.3
-        version: 12.1.3
-      prettier:
-        specifier: ^3.2.4
-        version: 3.2.4
-      prettyjson:
-        specifier: ^1.2.5
-        version: 1.2.5
-      prompts:
-        specifier: ^2.4.2
-        version: 2.4.2
-      toml-js:
-        specifier: ^0.0.8
-        version: 0.0.8
-      vite-node:
-        specifier: ^1.2.1
-        version: 1.2.1(@types/node@20.11.5)
-      vitest:
-        specifier: ^1.2.1
-        version: 1.2.1(@types/node@20.11.5)
-    devDependencies:
-      '@biomejs/biome':
-        specifier: 1.5.3
-        version: 1.5.3
-      '@rollup/plugin-json':
-        specifier: ^6.1.0
-        version: 6.1.0(rollup@4.9.6)
-      '@rollup/plugin-typescript':
-        specifier: ^11.1.6
-        version: 11.1.6(rollup@4.9.6)(tslib@2.6.2)(typescript@5.3.3)
-      '@types/node':
-        specifier: ^20.11.5
-        version: 20.11.5
-      execa:
-        specifier: ^8.0.1
-        version: 8.0.1
-      rollup:
-        specifier: ^4.9.6
-        version: 4.9.6
-      rollup-plugin-delete:
-        specifier: ^2.0.0
-        version: 2.0.0
-      strip-ansi:
-        specifier: ^7.1.0
-        version: 7.1.0
-      tslib:
-        specifier: ^2.6.2
-        version: 2.6.2
-      typescript:
-        specifier: ^5.3.3
-        version: 5.3.3
+devDependencies:
+  '@biomejs/biome':
+    specifier: 1.5.3
+    version: 1.5.3
+  '@rollup/plugin-json':
+    specifier: ^6.1.0
+    version: 6.1.0(rollup@4.9.6)
+  '@rollup/plugin-typescript':
+    specifier: ^11.1.6
+    version: 11.1.6(rollup@4.9.6)(tslib@2.6.2)(typescript@5.3.3)
+  '@types/node':
+    specifier: ^20.11.5
+    version: 20.11.5
+  execa:
+    specifier: ^8.0.1
+    version: 8.0.1
+  rollup:
+    specifier: ^4.9.6
+    version: 4.9.6
+  rollup-plugin-delete:
+    specifier: ^2.0.0
+    version: 2.0.0
+  strip-ansi:
+    specifier: ^7.1.0
+    version: 7.1.0
+  tslib:
+    specifier: ^2.6.2
+    version: 2.6.2
+  typescript:
+    specifier: ^5.3.3
+    version: 5.3.3
 
 packages:
 

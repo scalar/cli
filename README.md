@@ -8,6 +8,13 @@
 
 Command-line interface to work with OpenAPI files
 
+## Features
+
+* Format & validate OpenAPI files
+* Upload your OpenAPI files to Scalar
+* Get a fully mocked API for testing purposes
+* Preview your API reference
+
 ## Quickstart
 
 ```bash
@@ -31,13 +38,6 @@ scalar reference openapi.json
 scalar mock openapi.json
 scalar share openapi.json
 ```
-
-## Features
-
-* Format & validate OpenAPI files
-* Upload your OpenAPI files to Scalar
-* Get a fully mocked API for testing purposes
-* Preview your API reference
 
 [Full documentation](https://github.com/scalar/cli/blob/main/packages/cli/README.md)
 

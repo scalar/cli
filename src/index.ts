@@ -38,6 +38,21 @@ async function getOpenApiFile(file: string) {
   return validator.resolveRefs() as Promise<OpenAPI.Document>
 }
 
+async function getRawOpenApiFile(file: string) {
+  const validator = new Validator()
+  const result = await validator.validate(file)
+
+  if (!result.valid) {
+    console.warn(
+      kleur.bold().yellow('[WARN]'),
+      kleur.yellow(`File doesn’t match the OpenAPI specification.`),
+    )
+    console.log()
+  }
+
+  return validator.specification as Promise<OpenAPI.Document>
+}
+
 function getMethodColor(method: string) {
   const colors = {
     get: 'green',
@@ -384,6 +399,84 @@ program
         (info) => {
           console.log(
             `${kleur.bold().green('➜ Mock Server')} ${kleur.white('listening on')} ${kleur.cyan(`http://localhost:${info.port}`)}`,
+          )
+          console.log()
+        },
+      )
+    },
+  )
+
+program
+  .command('reference')
+  .description('Serve an API Reference from an OpenAPI file')
+  .argument('[file]', 'OpenAPI file to show the reference for')
+  .option('-w, --watch', 'watch the file for changes')
+  .option('-p, --port <port>', 'set the HTTP port for the API reference server')
+  .action(
+    async (
+      fileArgument: string,
+      { watch, port }: { watch?: boolean; port?: number },
+    ) => {
+      const file = getFileFromConfiguration(fileArgument)
+
+      let specification = await getRawOpenApiFile(file)
+
+      // watch file for changes
+      if (watch) {
+        fs.watchFile(file, async () => {
+          console.log(
+            kleur.bold().white('[INFO]'),
+            kleur.grey('OpenAPI file modified'),
+          )
+          specification = await getRawOpenApiFile(file)
+        })
+      }
+
+      if (
+        specification?.paths === undefined ||
+        Object.keys(specification?.paths).length === 0
+      ) {
+        console.log(
+          kleur.bold().yellow('[WARN]'),
+          kleur.grey('Couldn’t find any paths in the OpenAPI file.'),
+        )
+      }
+
+      const app = new Hono()
+
+      app.get('/', (c) => {
+        return c.html(`<!doctype html>
+        <html>
+          <head>
+            <title>API Reference</title>
+            <meta charset="utf-8" />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1" />
+            <style>
+              body {
+                margin: 0;
+              }
+            </style>
+          </head>
+          <body>
+            <script
+              id="api-reference"
+              type="application/json"
+              data-proxy-url="https://api.scalar.com/request-proxy">${JSON.stringify(specification)}</script>
+            <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+          </body>
+        </html>`)
+      })
+
+      serve(
+        {
+          fetch: app.fetch,
+          port: port ?? 3000,
+        },
+        (info) => {
+          console.log(
+            `${kleur.bold().green('➜ API Reference Server')} ${kleur.white('listening on')} ${kleur.cyan(`http://localhost:${info.port}`)}`,
           )
           console.log()
         },

@@ -66,6 +66,46 @@ function getMethodColor(method: string) {
   return colors[method.toLowerCase()] ?? 'grey'
 }
 
+function getHtmlDocument(specification: OpenAPI.Document, watch = false) {
+  return `<!doctype html>
+  <html>
+    <head>
+      <title>API Reference</title>
+      <meta charset="utf-8" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1" />
+      <style>
+        body {
+          margin: 0;
+        }
+      </style>
+      ${
+        watch
+          ? `
+            <script>
+              const evtSource = new EventSource('__watcher');
+              evtSource.onmessage = (event) => {
+                console.log(\`message: \${event.data}\`);
+                window.location.reload();
+              };
+            </script>
+          `
+          : ''
+      }
+    </head>
+    <body>
+      <script
+        id="api-reference"
+        type="application/json"
+        data-proxy-url="https://api.scalar.com/request-proxy">${JSON.stringify(
+          specification,
+        )}</script>
+      <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+    </body>
+  </html>`
+}
+
 function getFileFromConfiguration(file?: string) {
   // If file is empty, throw an exception
   if (file) {
@@ -467,47 +507,17 @@ program
       const app = new Hono()
 
       app.get('/', (c) => {
-        return c.html(`<!doctype html>
-        <html>
-          <head>
-            <title>API Reference</title>
-            <meta charset="utf-8" />
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1" />
-            <style>
-              body {
-                margin: 0;
-              }
-            </style>
-            <script>
-              const evtSource = new EventSource('__hmr__');
-              evtSource.onmessage = (event) => {
-                console.log(\`message: \${event.data}\`);
-                window.location.reload();
-              };
-            </script>
-          </head>
-          <body>
-            <script
-              id="api-reference"
-              type="application/json"
-              data-proxy-url="https://api.scalar.com/request-proxy">${JSON.stringify(
-                specification,
-              )}</script>
-            <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
-          </body>
-        </html>`)
+        return c.html(getHtmlDocument(specification, watch))
       })
 
-      app.use('/__hmr__', async (c, next) => {
+      app.use('/__watcher', async (c, next) => {
         c.header('Content-Type', 'text/event-stream')
         c.header('Cache-Control', 'no-cache')
         c.header('Connection', 'keep-alive')
         await next()
       })
 
-      app.get('/__hmr__', (c) => {
+      app.get('/__watcher', (c) => {
         return stream(c, async (stream) => {
           // watch file for changes
           if (watch) {

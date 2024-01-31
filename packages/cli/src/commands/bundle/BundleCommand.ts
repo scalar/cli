@@ -1,8 +1,8 @@
 import fs from 'node:fs'
 import { Command } from 'commander'
 import kleur from 'kleur'
-import { useGivenFileOrConfiguration, loadOpenApiFile } from '../../utils'
-import  type { OpenAPI } from 'openapi-types'
+import type { OpenAPI } from 'openapi-types'
+import { loadOpenApiFile, useGivenFileOrConfiguration } from '../../utils'
 
 export function BundleCommand() {
   const cmd = new Command('bundle')
@@ -17,22 +17,26 @@ export function BundleCommand() {
 
     const file = useGivenFileOrConfiguration(fileArgument)
 
-    let newContent = (await loadOpenApiFile(file))
+    const newContent = (await loadOpenApiFile(file))
       .specification as OpenAPI.Document
 
     // Replace file content with newContent
-    let cache = []
-    const json = JSON.stringify(newContent, function(key, value) {
-      if (typeof value === "object" && value !== null) {
-        if (cache.indexOf(value) !== -1) {
-          // Circular reference found, discard key
-          return;
+    const cache = []
+    const json = JSON.stringify(
+      newContent,
+      (key, value) => {
+        if (typeof value === 'object' && value !== null) {
+          if (cache.indexOf(value) !== -1) {
+            // Circular reference found, discard key
+            return
+          }
+          // Store value in our collection
+          cache.push(value)
         }
-        // Store value in our collection
-        cache.push(value);
-      }
-      return value;
-    }, 2)
+        return value
+      },
+      2,
+    )
 
     fs.writeFileSync(output ?? file, json, 'utf8')
 

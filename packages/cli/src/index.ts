@@ -3,6 +3,7 @@
 import { Command } from 'commander'
 import { version } from '../package.json'
 import {
+  BundleCommand,
   FormatCommand,
   InitCommand,
   MockCommand,
@@ -23,6 +24,7 @@ program.addCommand(InitCommand(), {
 })
 program.addCommand(FormatCommand())
 program.addCommand(ValidateCommand())
+program.addCommand(BundleCommand())
 program.addCommand(ReferenceCommand())
 program.addCommand(MockCommand())
 program.addCommand(ShareCommand())

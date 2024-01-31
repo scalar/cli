@@ -14,6 +14,7 @@ Command-line interface to work with OpenAPI files
 * Upload your OpenAPI files to Scalar
 * Get a fully mocked API for testing purposes
 * Preview your API reference
+* Bundle multiple OpenAPI files
 
 ## Quickstart
 
@@ -34,8 +35,9 @@ scalar --version
 scalar init
 scalar format openapi.json
 scalar validate openapi.json
-scalar reference openapi.json
-scalar mock openapi.json
+scalar bundle openapi.json --output bundle.json
+scalar reference openapi.json --watch
+scalar mock openapi.json --watch
 scalar share openapi.json
 ```
 

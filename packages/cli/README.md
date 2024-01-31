@@ -62,6 +62,16 @@ You can also change the port like this:
 scalar mock openapi.json --watch --port 8080
 ```
 
+### bundle
+
+Some OpenAPI files reference other files from the file system or an URL. You can bundle those files and make them a single file:
+
+```bash
+scalar bundle openapi.json --output bundle.json
+```
+
+If you don’t provide an `output` file name, the input file will be overwritten.
+
 ### init
 
 If you’re tired of passing the file name again and again, just configure it once:

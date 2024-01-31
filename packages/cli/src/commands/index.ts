@@ -1,3 +1,4 @@
+export * from './bundle/BundleCommand'
 export * from './format/FormatCommand'
 export * from './init/InitCommand'
 export * from './mock/MockCommand'

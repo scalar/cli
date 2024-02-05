@@ -37,7 +37,7 @@
         "@scalar/api-reference": "^1.14.0",
         "@seriousme/openapi-schema-validator": "^2.1.6",
         "commander": "^11.1.0",
-        "hono": "^3.12.8",
+        "hono": "^3.12.11",
         "kleur": "^4.1.5",
         "openapi-types": "^12.1.3",
         "prettier": "^3.2.4",

@@ -31,8 +31,8 @@ importers:
         specifier: ^11.1.0
         version: 11.1.0
       hono:
-        specifier: ^3.12.8
-        version: 3.12.8
+        specifier: ^3.12.11
+        version: 3.12.11
       kleur:
         specifier: ^4.1.5
         version: 4.1.5
@@ -2876,8 +2876,8 @@ packages:
     engines: {node: '>=12.0.0'}
     dev: false
 
-  /hono@3.12.8:
-    resolution: {integrity: sha512-vnOEIRdqsp4uHE/dkOBr9EYmTsR86sD/FyG2xhfAQzR9udDRglN1nuO7SGc/7U3HfSorc6PSCNGN6upnVtCmfg==}
+  /hono@3.12.11:
+    resolution: {integrity: sha512-LSpxVgIMR3UzyFiXZaPvqBUGqyOKG0LMZqgMn2RXz9f+YAdkHSfFQQX0dtU72fPm5GnEMh5AYXs0ek5NYgMOmA==}
     engines: {node: '>=16.0.0'}
     dev: false
 

@@ -62,16 +62,13 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20]
 
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20
       - name: Validate OpenAPI File
         # Replace `./my-openapi-file.json` with the correct path and filename for your project.
         # Or: run `npx @scalar/cli init` and add the config file to your repository.

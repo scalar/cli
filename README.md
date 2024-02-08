@@ -43,6 +43,41 @@ scalar share openapi.json
 
 [Full documentation](https://github.com/scalar/cli/blob/main/packages/cli/README.md)
 
+### GitHub Actions
+
+To validate your OpenAPI file in GitHub Actions, add this workflow:
+
+```yml
+# .github/workflows/validate-openapi-file.yml
+name: Validate OpenAPI File
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Validate OpenAPI File
+        # Replace `./my-openapi-file.json` with the correct path and filename for your project.
+        # Or: run `npx @scalar/cli init` and add the config file to your repository.
+        run: npx @scalar/cli validate ./my-openapi-file.json
+```
+
 ## Community
 
 We are API nerds. You too? Let’s chat on Discord: <https://discord.gg/8HeZcRGPFS>

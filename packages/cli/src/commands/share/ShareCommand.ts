@@ -1,5 +1,6 @@
 import { Command } from 'commander'
 import kleur from 'kleur'
+
 import { readFile, useGivenFileOrConfiguration } from '../../utils'
 
 export function ShareCommand() {

@@ -1,13 +1,12 @@
-import fs from 'node:fs'
 import { Command } from 'commander'
 import kleur from 'kleur'
+import fs from 'node:fs'
+import path from 'node:path'
 import prompts from 'prompts'
 import toml from 'toml-js'
-import path from 'node:path'
 
 export function InitCommand() {
   const cmd = new Command('init')
-
 
   cmd.description('Create a new `scalar.toml` file')
   cmd.option('-f, --file [file]', 'your OpenAPI file')

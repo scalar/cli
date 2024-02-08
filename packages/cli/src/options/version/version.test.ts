@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+
 import { version } from '../../../package.json'
 import { ScalarCli } from '../../../tests/invoke-cli'
 

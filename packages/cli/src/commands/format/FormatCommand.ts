@@ -1,7 +1,8 @@
-import fs from 'node:fs'
 import { Command } from 'commander'
 import kleur from 'kleur'
+import fs from 'node:fs'
 import { format } from 'prettier'
+
 import { readFile, useGivenFileOrConfiguration } from '../../utils'
 
 export function FormatCommand() {

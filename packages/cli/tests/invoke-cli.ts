@@ -1,8 +1,9 @@
-import { join } from 'node:path'
-import process from 'node:process'
 import type { ExecaSyncError } from 'execa'
 import { execaSync } from 'execa'
+import { join } from 'node:path'
+import process from 'node:process'
 import strip from 'strip-ansi'
+
 import { createLogsMatcher } from './matcher'
 
 const builtCliLocation = join(__dirname, '..', 'dist', 'index.js')

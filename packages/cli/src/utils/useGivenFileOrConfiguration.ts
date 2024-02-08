@@ -1,5 +1,6 @@
 import kleur from 'kleur'
 import toml from 'toml-js'
+
 import { readFile } from './'
 
 export function useGivenFileOrConfiguration(file?: string) {

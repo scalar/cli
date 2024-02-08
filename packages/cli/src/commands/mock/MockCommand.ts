@@ -1,10 +1,11 @@
-import fs from 'node:fs'
 import { serve } from '@hono/node-server'
 import { getExampleFromSchema } from '@scalar/api-reference'
 import { Command } from 'commander'
 import { Hono } from 'hono'
 import kleur from 'kleur'
+import fs from 'node:fs'
 import type { OpenAPI } from 'openapi-types'
+
 import {
   getMethodColor,
   getOperationByMethodAndPath,
@@ -62,9 +63,9 @@ export function MockCommand() {
           console.log(
             `${kleur
               .bold()
-              [getMethodColor(method)](
-                method.toUpperCase().padEnd(6),
-              )} ${kleur.grey(`${path}`)}`,
+              [
+                getMethodColor(method)
+              ](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
           )
         }
       }
@@ -81,9 +82,9 @@ export function MockCommand() {
         console.log(
           `${kleur
             .bold()
-            [getMethodColor(method)](
-              method.toUpperCase().padEnd(6),
-            )} ${kleur.grey(`${path}`)}`,
+            [
+              getMethodColor(method)
+            ](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
           `${kleur.grey('→')} ${
             operation?.operationId
               ? kleur.white(operation.operationId)

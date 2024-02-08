@@ -10,11 +10,11 @@ Command-line interface to work with OpenAPI files
 
 ## Features
 
-* Format & validate OpenAPI files
-* Upload your OpenAPI files to Scalar
-* Get a fully mocked API for testing purposes
-* Preview your API reference
-* Bundle multiple OpenAPI files
+- Format & validate OpenAPI files
+- Upload your OpenAPI files to Scalar
+- Get a fully mocked API for testing purposes
+- Preview your API reference
+- Bundle multiple OpenAPI files
 
 ## Quickstart
 

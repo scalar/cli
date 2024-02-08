@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest'
-import { ScalarCli } from '../../../tests/invoke-cli'
-import path from 'node:path'
 import fs from 'node:fs'
+import path from 'node:path'
+import { describe, expect, it } from 'vitest'
+
+import { ScalarCli } from '../../../tests/invoke-cli'
 
 describe('init', () => {
   it('creates a config file', () => {
@@ -18,7 +19,11 @@ describe('init', () => {
     // Create config file
     const [exitCode, logs] = ScalarCli()
       .setCwd(path.resolve('./'))
-      .invoke(['init', '--file', './packages/cli/src/commands/validate/valid.json'])
+      .invoke([
+        'init',
+        '--file',
+        './packages/cli/src/commands/validate/valid.json',
+      ])
 
     // Output
     logs.should.contain('./packages/cli/src/commands/validate/valid.json')

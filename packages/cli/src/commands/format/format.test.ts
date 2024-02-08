@@ -9,13 +9,13 @@ describe('format', () => {
     const notWellFormattedJson = '{"foo":    "bar"}'
 
     // Create JSON file
-    const jsonFile = './src/commands/format/temp.json'
+    const jsonFile = './packages/cli/src/commands/format/temp.json'
     fs.writeFileSync(jsonFile, notWellFormattedJson)
 
     // Format
     const [exitCode, logs] = ScalarCli()
       .setCwd(path.resolve('./'))
-      .invoke(['format', './src/commands/format/temp.json'])
+      .invoke(['format', './packages/cli/src/commands/format/temp.json'])
 
     // Output
     logs.should.contain('File formatted')

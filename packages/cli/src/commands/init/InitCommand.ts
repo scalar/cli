@@ -3,15 +3,20 @@ import { Command } from 'commander'
 import kleur from 'kleur'
 import prompts from 'prompts'
 import toml from 'toml-js'
+import path from 'node:path'
 
 export function InitCommand() {
   const cmd = new Command('init')
 
+
   cmd.description('Create a new `scalar.toml` file')
   cmd.option('-f, --file [file]', 'your OpenAPI file')
   cmd.action(async ({ file }) => {
+    // Path to `scalar.toml` file
+    const configFile = path.resolve('scalar.toml')
+
     // Check if `scalar.toml` already exists
-    if (fs.existsSync('scalar.toml')) {
+    if (fs.existsSync(configFile)) {
       console.warn(kleur.yellow('A `scalar.toml` file already exists.'))
       console.log()
 
@@ -66,7 +71,7 @@ export function InitCommand() {
     console.log()
 
     // Create `scalar.toml` file
-    fs.writeFileSync('scalar.toml', content)
+    fs.writeFileSync(configFile, content)
 
     console.log(kleur.green('Created a new project configuration.'))
     console.log(

@@ -3,7 +3,7 @@
     "private": true,
     "scripts": {
         "@scalar/cli": "pnpm --filter @scalar/cli run @scalar/cli",
-        "test": "pnpm -r test",
+        "test": "vitest",
         "lint": "pnpm -r lint",
         "format": "pnpm -r format",
         "format:check": "pnpm -r format:check",
@@ -15,6 +15,7 @@
         "@changesets/cli": "^2.27.1"
     },
     "devDependencies": {
-        "turbo": "^1.12.3"
+        "turbo": "^1.12.3",
+        "vitest": "^1.2.2"
     }
 }

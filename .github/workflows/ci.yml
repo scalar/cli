@@ -34,4 +34,4 @@ jobs:
       - name: Check types
         run: pnpm turbo types:check
       - name: Run tests
-        run: pnpm turbo test
+        run: pnpm test

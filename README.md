@@ -81,6 +81,9 @@ We are API nerds. You too? Let’s chat on Discord: <https://discord.gg/8HeZcRGP
 
 ## Contributors
 
+<!-- readme: collaborators,contributors -start -->
+<!-- readme: collaborators,contributors -end -->
+
 Contributions are welcome! Read [`CONTRIBUTING`](https://github.com/scalar/cli/blob/main/CONTRIBUTING).
 
 ## License

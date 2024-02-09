@@ -1,7 +1,8 @@
 import kleur from 'kleur'
-import toml from 'toml-js'
 
 import { readFile } from './'
+
+export const CONFIG_FILE = 'scalar.config.json'
 
 export function useGivenFileOrConfiguration(file?: string) {
   // If a specific file is given, use it.
@@ -11,7 +12,7 @@ export function useGivenFileOrConfiguration(file?: string) {
 
   // Try to load the configuration
   try {
-    const configuration = toml.parse(readFile('scalar.toml'))
+    const configuration = JSON.parse(readFile(CONFIG_FILE))
 
     if (configuration?.reference?.file) {
       return configuration.reference.file

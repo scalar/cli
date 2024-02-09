@@ -7,7 +7,7 @@ import { ScalarCli } from '../../../tests/invoke-cli'
 describe('init', () => {
   it('creates a config file', () => {
     // Delete config file if it exists
-    const configFile = './scalar.toml'
+    const configFile = './scalar.config.json'
 
     if (fs.existsSync(configFile)) {
       fs.unlinkSync(configFile)
@@ -33,6 +33,14 @@ describe('init', () => {
     expect(fs.readFileSync(configFile, 'utf-8')).toContain(
       './packages/cli/src/commands/validate/valid.json',
     )
+    expect(JSON.parse(fs.readFileSync(configFile, 'utf-8'))).toMatchObject({
+      references: [
+        {
+          name: 'API Reference',
+          path: './packages/cli/src/commands/validate/valid.json',
+        },
+      ],
+    })
     expect(exitCode).toBe(0)
 
     fs.unlinkSync(configFile)

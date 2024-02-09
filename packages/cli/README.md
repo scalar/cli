@@ -80,7 +80,7 @@ If you’re tired of passing the file name again and again, just configure it on
 scalar init
 ```
 
-This will create a `scalar.toml` file for you. All commands will use the configured OpenAPI file by default.
+This will create a `scalar.config.json` file for you. All commands will use the configured OpenAPI file by default.
 
 ## Options
 

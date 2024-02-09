@@ -3,20 +3,21 @@ import kleur from 'kleur'
 import fs from 'node:fs'
 import path from 'node:path'
 import prompts from 'prompts'
-import toml from 'toml-js'
+
+import { CONFIG_FILE } from '../../utils'
 
 export function InitCommand() {
   const cmd = new Command('init')
 
-  cmd.description('Create a new `scalar.toml` file')
+  cmd.description('Create a new `scalar.config.json` file')
   cmd.option('-f, --file [file]', 'your OpenAPI file')
   cmd.action(async ({ file }) => {
-    // Path to `scalar.toml` file
-    const configFile = path.resolve('scalar.toml')
+    // Path to `scalar.config.json` file
+    const configFile = path.resolve(CONFIG_FILE)
 
-    // Check if `scalar.toml` already exists
+    // Check if `scalar.config.json` already exists
     if (fs.existsSync(configFile)) {
-      console.warn(kleur.yellow('A `scalar.toml` file already exists.'))
+      console.warn(kleur.yellow(`A ${CONFIG_FILE} file already exists.`))
       console.log()
 
       const { overwrite } = await prompts({
@@ -36,7 +37,7 @@ export function InitCommand() {
 
     // Ask for the OpenAPI file
     const configuration = {
-      reference: { file: '' },
+      references: [],
     }
 
     const { input } = file
@@ -53,12 +54,15 @@ export function InitCommand() {
           },
         })
 
-    configuration.reference.file = input
+    configuration.references.push({
+      name: 'API Reference',
+      path: input,
+    })
 
-    const content = toml.dump(configuration)
+    const content = JSON.stringify(configuration, null, 2)
 
     console.log()
-    console.log(kleur.bold().white('    scalar.toml'))
+    console.log(kleur.bold().white(`    ${CONFIG_FILE}`))
     console.log()
     console.log(
       content
@@ -69,7 +73,7 @@ export function InitCommand() {
     )
     console.log()
 
-    // Create `scalar.toml` file
+    // Create `scalar.config.json` file
     fs.writeFileSync(configFile, content)
 
     console.log(kleur.green('Created a new project configuration.'))

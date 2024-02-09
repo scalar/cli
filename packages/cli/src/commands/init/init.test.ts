@@ -30,6 +30,9 @@ describe('init', () => {
 
     // File exists
     expect(fs.existsSync(configFile)).toBe(true)
+    expect(fs.readFileSync(configFile, 'utf-8')).toContain(
+      './packages/cli/src/commands/validate/valid.json',
+    )
     expect(exitCode).toBe(0)
 
     fs.unlinkSync(configFile)

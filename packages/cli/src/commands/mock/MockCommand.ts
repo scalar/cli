@@ -3,7 +3,6 @@ import { getExampleFromSchema } from '@scalar/api-reference'
 import { Command } from 'commander'
 import { Hono } from 'hono'
 import kleur from 'kleur'
-import fs from 'node:fs'
 import type { OpenAPI } from 'openapi-types'
 
 import {
@@ -11,6 +10,7 @@ import {
   getOperationByMethodAndPath,
   loadOpenApiFile,
   useGivenFileOrConfiguration,
+  watchFile,
 } from '../../utils'
 
 export function MockCommand() {
@@ -32,14 +32,13 @@ export function MockCommand() {
 
       // watch file for changes
       if (watch) {
-        fs.watchFile(file, async () => {
+        await watchFile(file, async () => {
           console.log(
             kleur.bold().white('[INFO]'),
             kleur.grey('Mock Server was updated.'),
           )
-          schema = (
-            await loadOpenApiFile(file)
-          ).resolveRefs() as OpenAPI.Document
+          schema = (await loadOpenApiFile(file))
+            .specification as OpenAPI.Document
         })
       }
 

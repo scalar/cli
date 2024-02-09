@@ -3,13 +3,13 @@ import { Command } from 'commander'
 import { Hono } from 'hono'
 import { stream } from 'hono/streaming'
 import kleur from 'kleur'
-import fs from 'node:fs'
 import type { OpenAPI } from 'openapi-types'
 
 import {
   getHtmlDocument,
   loadOpenApiFile,
   useGivenFileOrConfiguration,
+  watchFile,
 } from '../../utils'
 
 export function ReferenceCommand() {
@@ -59,8 +59,7 @@ export function ReferenceCommand() {
         return stream(c, async (stream) => {
           // watch file for changes
           if (watch) {
-            console.log(`Watch ${file}`)
-            fs.watchFile(file, async () => {
+            watchFile(file, async () => {
               console.log(
                 kleur.bold().white('[INFO]'),
                 kleur.grey('OpenAPI file modified'),

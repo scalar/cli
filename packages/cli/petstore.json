@@ -39,7 +39,7 @@
     "/pet": {
       "put": {
         "tags": ["pet"],
-        "summary": "Update an existing pet",
+        "summary": "Hello iuapsd",
         "description": "Update an existing pet by Id",
         "operationId": "updatePet",
         "requestBody": {

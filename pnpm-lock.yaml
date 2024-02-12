@@ -36,8 +36,8 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0
       '@scalar/api-reference':
-        specifier: ^1.15.5
-        version: 1.15.5(nanoid@5.0.5)(postcss@8.4.35)(typescript@5.3.3)(unified@11.0.4)(vue@3.4.16)(yjs@13.6.11)
+        specifier: ^1.15.6
+        version: 1.15.6(nanoid@5.0.5)(postcss@8.4.35)(typescript@5.3.3)(unified@11.0.4)(vue@3.4.16)(yjs@13.6.11)
       '@seriousme/openapi-schema-validator':
         specifier: ^2.1.6
         version: 2.1.6
@@ -1292,8 +1292,8 @@ packages:
       - yjs
     dev: false
 
-  /@scalar/api-reference@1.15.5(nanoid@5.0.5)(postcss@8.4.35)(typescript@5.3.3)(unified@11.0.4)(vue@3.4.16)(yjs@13.6.11):
-    resolution: {integrity: sha512-lOEhiW164ANhCQumjo45oCE+MVEDaBpAYxCNwJnRhYDdhKVPkLEd43HhzxUJSu4fZyFuNoCkbKkxLnh/2Mohpg==}
+  /@scalar/api-reference@1.15.6(nanoid@5.0.5)(postcss@8.4.35)(typescript@5.3.3)(unified@11.0.4)(vue@3.4.16)(yjs@13.6.11):
+    resolution: {integrity: sha512-DL2HLPe+5HFajfiK0/1V7gmNcqYdj9s7Sb12gbSCwRoEf1/K3ihMjbEn1hKt6FPj81NR3W6wj37it52p76BupA==}
     engines: {node: '>=18'}
     peerDependencies:
       unified: ^11.0.0

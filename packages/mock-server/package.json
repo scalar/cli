@@ -1,6 +1,6 @@
 {
-  "name": "@scalar/cli",
-  "description": "A command-line interface to work with OpenAPI files",
+  "name": "@scalar/mock-server",
+  "description": "OpenAPI mock server server",
   "license": "MIT",
   "author": "Scalar (https://github.com/scalar)",
   "homepage": "https://github.com/scalar/cli",
@@ -14,39 +14,32 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/scalar/cli.git",
-    "directory": "packages/cli"
+    "directory": "packages/mock-server"
   },
   "engines": {
     "node": ">=18"
   },
+  "main": "./dist/index.js",
+  "types": "dist/src/index.d.ts",
+  "exports": {
+    "import": "./dist/index.js"
+  },
   "scripts": {
-    "@scalar/cli": "pnpm vite-node src/index.ts",
+    "test": "vitest",
     "cli:link": "pnpm run build && npm unlink -g && npm link",
     "types:check": "tsc --noEmit --skipLibCheck",
     "build": "rm -Rf dist/ && tsc && rollup -c"
   },
   "type": "module",
   "version": "0.0.1",
-  "bin": {
-    "scalar": "./dist/index.js"
-  },
   "files": [
     "./dist"
   ],
   "dependencies": {
     "@hono/node-server": "^1.7.0",
-    "@parcel/watcher": "^2.4.0",
     "@scalar/api-reference": "^1.16.1",
-    "@scalar/mock-server": "workspace:*",
-    "@seriousme/openapi-schema-validator": "^2.1.6",
-    "commander": "^12.0.0",
+    "@scalar/openapi-parser": "^0.1.0",
     "hono": "^4.0.2",
-    "kleur": "^4.1.5",
-    "openapi-types": "^12.1.3",
-    "prettier": "^3.2.5",
-    "prettyjson": "^1.2.5",
-    "prompts": "^2.4.2",
-    "toml-js": "^0.0.8",
     "vite-node": "^1.2.2"
   },
   "devDependencies": {

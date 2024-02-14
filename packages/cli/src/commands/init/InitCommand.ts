@@ -9,7 +9,9 @@ import { CONFIG_FILE } from '../../utils'
 export function InitCommand() {
   const cmd = new Command('init')
 
-  cmd.description('Create a new `scalar.config.json` file')
+  cmd.description(
+    'Create a new `scalar.config.json` file to configure where your OpenAPI file is placed.',
+  )
   cmd.option('-f, --file [file]', 'your OpenAPI file')
   cmd.action(async ({ file }) => {
     // Path to `scalar.config.json` file

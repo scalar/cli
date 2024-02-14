@@ -1,13 +1,12 @@
 import { serve } from '@hono/node-server'
-import { getExampleFromSchema } from '@scalar/api-reference'
+import { createMockServer } from '@scalar/mock-server'
 import { Command } from 'commander'
-import { Hono } from 'hono'
+import type { Context } from 'hono'
 import kleur from 'kleur'
 import type { OpenAPI } from 'openapi-types'
 
 import {
   getMethodColor,
-  getOperationByMethodAndPath,
   loadOpenApiFile,
   useGivenFileOrConfiguration,
   watchFile,
@@ -25,110 +24,125 @@ export function MockCommand() {
       fileArgument: string,
       { watch, port }: { watch?: boolean; port?: number },
     ) => {
+      // Server instance
+      let server: ReturnType<typeof serve> = null
+
+      // Configuration
       const file = useGivenFileOrConfiguration(fileArgument)
 
-      let schema = (await loadOpenApiFile(file))
+      // Load OpenAPI file
+      let specification = (await loadOpenApiFile(file))
         .specification as OpenAPI.Document
 
-      // watch file for changes
+      // Watch OpenAPI file for changes
       if (watch) {
         await watchFile(file, async () => {
           console.log(
             kleur.bold().white('[INFO]'),
             kleur.grey('Mock Server was updated.'),
           )
-          schema = (await loadOpenApiFile(file))
+          specification = (await loadOpenApiFile(file))
             .specification as OpenAPI.Document
+
+          server.close()
+          server = await bootServer({
+            openapi: specification,
+            port,
+          })
         })
       }
 
-      console.log(kleur.bold().white('Available Paths'))
-      console.log()
+      // Show all paths from the specification
+      printAvailablePaths(specification)
 
-      if (
-        schema?.paths === undefined ||
-        Object.keys(schema?.paths).length === 0
-      ) {
-        console.log(
-          kleur.bold().yellow('[WARN]'),
-          kleur.grey('Couldn’t find any paths in the OpenAPI file.'),
-        )
-      }
-
-      // loop through all paths
-      for (const path in schema?.paths ?? []) {
-        // loop through all methods
-        for (const method in schema.paths?.[path]) {
-          console.log(
-            `${kleur
-              .bold()
-              [
-                getMethodColor(method)
-              ](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
-          )
-        }
-      }
-
-      console.log()
-
-      const app = new Hono()
-
-      app.all('/*', (c) => {
-        const { method, path } = c.req
-
-        const operation = getOperationByMethodAndPath(schema, method, path)
-
-        console.log(
-          `${kleur
-            .bold()
-            [
-              getMethodColor(method)
-            ](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
-          `${kleur.grey('→')} ${
-            operation?.operationId
-              ? kleur.white(operation.operationId)
-              : kleur.red('[ERROR] 404 Not Found')
-          }`,
-        )
-
-        if (!operation) {
-          return c.text('Not found', 404)
-        }
-
-        // if (!operation) {
-        //   return c.text('Method not allowed', 405)
-        // }
-
-        const jsonResponseConfiguration =
-          operation.responses['200'].content['application/json']
-
-        const response = jsonResponseConfiguration.example
-          ? jsonResponseConfiguration.example
-          : jsonResponseConfiguration.schema
-            ? getExampleFromSchema(jsonResponseConfiguration.schema, {
-                emptyString: '…',
-              })
-            : null
-
-        return c.json(response)
+      // Listen for requests
+      server = await bootServer({
+        openapi: specification,
+        port,
       })
-
-      serve(
-        {
-          fetch: app.fetch,
-          port: port ?? 3000,
-        },
-        (info) => {
-          console.log(
-            `${kleur.bold().green('➜ Mock Server')} ${kleur.white(
-              'listening on',
-            )} ${kleur.cyan(`http://localhost:${info.port}`)}`,
-          )
-          console.log()
-        },
-      )
     },
   )
 
   return cmd
+}
+
+async function bootServer({
+  openapi,
+  port,
+}: {
+  openapi: OpenAPI.Document
+  port?: number
+}) {
+  const app = await createMockServer({
+    openapi,
+    onRequest,
+  })
+
+  return serve(
+    {
+      fetch: app.fetch,
+      port: port ?? 3000,
+    },
+    (info) => {
+      console.log(
+        `${kleur.bold().green('➜ Mock Server')} ${kleur.white(
+          'listening on',
+        )} ${kleur.cyan(`http://localhost:${info.port}`)}`,
+      )
+      console.log()
+    },
+  )
+}
+
+function printAvailablePaths(specification: OpenAPI.Document) {
+  console.log(kleur.bold().white('Available Paths'))
+  console.log()
+
+  if (
+    specification?.paths === undefined ||
+    Object.keys(specification?.paths).length === 0
+  ) {
+    console.log(
+      kleur.bold().yellow('[WARN]'),
+      kleur.grey('Couldn’t find any paths in the OpenAPI file.'),
+    )
+  }
+
+  // loop through all paths
+  for (const path in specification?.paths ?? []) {
+    // loop through all methods
+    for (const method in specification.paths?.[path]) {
+      console.log(
+        `${kleur
+          .bold()
+          [
+            getMethodColor(method)
+          ](method.toUpperCase().padEnd(6))} ${kleur.grey(`${path}`)}`,
+      )
+    }
+  }
+
+  console.log()
+}
+
+function onRequest({
+  context,
+  operation,
+}: {
+  context: Context
+  operation: OpenAPI.Operation
+}) {
+  const { method } = context.req
+  console.log(
+    `${kleur
+      .bold()
+      [
+        getMethodColor(method)
+      ](method.toUpperCase().padEnd(6))} ${kleur.grey(`${context.req.path}`)}`,
+    `${kleur.grey('→')} ${
+      operation?.operationId
+        ? kleur.white(operation.operationId)
+        : kleur.red('[ERROR] 404 Not Found')
+    }`,
+  )
 }

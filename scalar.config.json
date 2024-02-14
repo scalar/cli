@@ -1,0 +1,8 @@
+{
+  "references": [
+    {
+      "name": "API Reference",
+      "path": "./packages/cli/src/commands/validate/valid.json"
+    }
+  ]
+}

@@ -8,6 +8,9 @@
 
 Command-line interface to work with OpenAPI files
 
+![Demo Video](https://github.com/scalar/cli/assets/6374090/ebd02178-503d-4a70-b292-a52a74b35008)
+
+
 ## Features
 
 - Format & validate OpenAPI files

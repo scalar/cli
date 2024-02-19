@@ -39,7 +39,7 @@
     "@hono/node-server": "^1.7.0",
     "@scalar/api-reference": "^1.16.1",
     "@scalar/openapi-parser": "^0.1.0",
-    "hono": "^4.0.2",
+    "hono": "^4.0.4",
     "vite-node": "^1.2.2"
   },
   "devDependencies": {

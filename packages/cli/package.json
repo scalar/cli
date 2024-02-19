@@ -40,7 +40,7 @@
     "@scalar/mock-server": "workspace:*",
     "@seriousme/openapi-schema-validator": "^2.1.6",
     "commander": "^12.0.0",
-    "hono": "^4.0.2",
+    "hono": "^4.0.4",
     "kleur": "^4.1.5",
     "openapi-types": "^12.1.3",
     "prettier": "^3.2.5",

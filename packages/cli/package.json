@@ -38,7 +38,7 @@
     "@parcel/watcher": "^2.4.0",
     "@scalar/api-reference": "^1.16.1",
     "@scalar/mock-server": "workspace:*",
-    "@seriousme/openapi-schema-validator": "^2.1.6",
+    "@seriousme/openapi-schema-validator": "^2.2.1",
     "commander": "^12.0.0",
     "hono": "^4.0.2",
     "kleur": "^4.1.5",

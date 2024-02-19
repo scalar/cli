@@ -39,8 +39,8 @@ importers:
         specifier: workspace:*
         version: link:../mock-server
       '@seriousme/openapi-schema-validator':
-        specifier: ^2.1.6
-        version: 2.1.6
+        specifier: ^2.2.1
+        version: 2.2.1
       commander:
         specifier: ^12.0.0
         version: 12.0.0
@@ -1599,14 +1599,15 @@ packages:
       vue: 3.4.19(typescript@5.3.3)
     dev: false
 
-  /@seriousme/openapi-schema-validator@2.1.6:
-    resolution: {integrity: sha512-Jq73VKUVzXKszM7opGYsWj+hCjJn3MhHXf76ijWPt+1HRJAwnr38flScVaorNGhP0Jt+JOq/i/NWYPmpZVQpBQ==}
+  /@seriousme/openapi-schema-validator@2.2.1:
+    resolution: {integrity: sha512-I+6l2vZ4qx+RyUo8GNnIbeqbv5ao1enSdNFPJ7x3slIVLU8aSBf228qpo+6iNWbRMK4ktF91jsv5KN7PpaJQtg==}
     hasBin: true
     dependencies:
       ajv: 8.12.0
       ajv-draft-04: 1.0.0(ajv@8.12.0)
       ajv-formats: 2.1.1(ajv@8.12.0)
       js-yaml: 4.1.0
+      minimist: 1.2.8
     dev: false
 
   /@sinclair/typebox@0.27.8:

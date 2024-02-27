@@ -45,8 +45,8 @@ importers:
         specifier: ^12.0.0
         version: 12.0.0
       hono:
-        specifier: ^4.0.5
-        version: 4.0.5
+        specifier: ^4.0.7
+        version: 4.0.7
       kleur:
         specifier: ^4.1.5
         version: 4.1.5
@@ -109,8 +109,8 @@ importers:
         specifier: ^0.1.0
         version: 0.1.0
       hono:
-        specifier: ^4.0.5
-        version: 4.0.5
+        specifier: ^4.0.7
+        version: 4.0.7
       vite-node:
         specifier: ^1.3.1
         version: 1.3.1(@types/node@20.11.19)
@@ -3112,8 +3112,8 @@ packages:
     engines: {node: '>=12.0.0'}
     dev: false
 
-  /hono@4.0.5:
-    resolution: {integrity: sha512-6LEGL1Pf3+dLjVA0NJxAB/3FJ6S3W5qxd/XOG7Wl9YOrpMRZT9lt83R4Ojs8dO6GbAUSutI7zTyjStnSn9sbEg==}
+  /hono@4.0.7:
+    resolution: {integrity: sha512-1fhi9MUzMIXWqPWA7OGPTpzjQupT78rf+U6N+2vxwy7U76jUX0dmkUtp572gR+dbGR1YugLYvyg/JrgPOSoutw==}
     engines: {node: '>=16.0.0'}
     dev: false
 

@@ -35,7 +35,7 @@
   ],
   "dependencies": {
     "@hono/node-server": "^1.8.1",
-    "@parcel/watcher": "^2.4.0",
+    "@parcel/watcher": "^2.4.1",
     "@scalar/api-reference": "^1.17.4",
     "@scalar/mock-server": "workspace:*",
     "@seriousme/openapi-schema-validator": "^2.2.1",

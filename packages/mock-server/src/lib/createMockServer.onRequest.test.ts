@@ -5,7 +5,7 @@ import { createMockServer } from './createMockServer'
 describe('onRequest', () => {
   it('call custom onRequest hook', async () => {
     return new Promise(async (resolve) => {
-      const openapi = {
+      const specification = {
         openapi: '3.1.0',
         info: {
           title: 'Hello World',
@@ -21,7 +21,7 @@ describe('onRequest', () => {
       }
 
       const server = await createMockServer({
-        openapi,
+        specification,
         onRequest({ context, operation }) {
           expect(context.req.method).toBe('GET')
           expect(context.req.path).toBe('/foobar')

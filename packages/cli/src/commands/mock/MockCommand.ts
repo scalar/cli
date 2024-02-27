@@ -31,8 +31,7 @@ export function MockCommand() {
       const file = useGivenFileOrConfiguration(fileArgument)
 
       // Load OpenAPI file
-      let specification = (await loadOpenApiFile(file))
-        .specification as OpenAPI.Document
+      let { specification } = await loadOpenApiFile(file)
 
       // Watch OpenAPI file for changes
       if (watch) {
@@ -41,12 +40,11 @@ export function MockCommand() {
             kleur.bold().white('[INFO]'),
             kleur.grey('Mock Server was updated.'),
           )
-          specification = (await loadOpenApiFile(file))
-            .specification as OpenAPI.Document
+          specification = (await loadOpenApiFile(file)).specification
 
           server.close()
           server = await bootServer({
-            openapi: specification,
+            specification,
             port,
           })
         })
@@ -57,7 +55,7 @@ export function MockCommand() {
 
       // Listen for requests
       server = await bootServer({
-        openapi: specification,
+        specification,
         port,
       })
     },
@@ -67,14 +65,14 @@ export function MockCommand() {
 }
 
 async function bootServer({
-  openapi,
+  specification,
   port,
 }: {
-  openapi: OpenAPI.Document
+  specification: OpenAPI.Document
   port?: number
 }) {
   const app = await createMockServer({
-    openapi,
+    specification,
     onRequest,
   })
 

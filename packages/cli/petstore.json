@@ -117,7 +117,7 @@
         "tags": ["pet"],
         "summary": "Finds Peats by status",
         "description": "Multiplae status values cana be provided with comma separated strings",
-        "operationId": "findPetsBySatatus",
+        "operationId": "findPetsByStatus",
         "parameters": [
           {
             "name": "status",

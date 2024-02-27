@@ -3,7 +3,6 @@ import { Command } from 'commander'
 import { Hono } from 'hono'
 import { stream } from 'hono/streaming'
 import kleur from 'kleur'
-import type { OpenAPI } from 'openapi-types'
 
 import {
   getHtmlDocument,
@@ -29,8 +28,7 @@ export function ReferenceCommand() {
     ) => {
       const file = useGivenFileOrConfiguration(fileArgument)
 
-      let specification = (await loadOpenApiFile(file))
-        .specification as OpenAPI.Document
+      let { specification } = await loadOpenApiFile(file)
 
       if (
         specification?.paths === undefined ||
@@ -65,8 +63,7 @@ export function ReferenceCommand() {
                 kleur.grey('OpenAPI file modified'),
               )
 
-              specification = (await loadOpenApiFile(file))
-                .specification as OpenAPI.Document
+              specification = (await loadOpenApiFile(file)).specification
 
               stream.write('data: file modified\n\n')
             })

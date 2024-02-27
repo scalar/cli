@@ -18,8 +18,7 @@ export function BundleCommand() {
 
     const file = useGivenFileOrConfiguration(fileArgument)
 
-    const newContent = (await loadOpenApiFile(file))
-      .specification as OpenAPI.Document
+    const { specification: newContent } = await loadOpenApiFile(file)
 
     // Replace file content with newContent
     const cache = []

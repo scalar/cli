@@ -1,5 +1,5 @@
-import { getExampleFromSchema } from '@scalar/api-reference'
-import { OpenAPI, parse } from '@scalar/openapi-parser'
+import { Operation, getExampleFromSchema } from '@scalar/api-reference'
+import { openapi } from '@scalar/openapi-parser'
 import { type Context, Hono } from 'hono'
 
 import { normalize, routeFromPath } from '../utils'
@@ -8,30 +8,27 @@ import { normalize, routeFromPath } from '../utils'
  * Create a mock server instance
  */
 export async function createMockServer(options?: {
-  openapi: string | Record<string, any>
-  onRequest?: (data: { context: Context; operation: OpenAPI.Operation }) => void
+  specification: string | Record<string, any>
+  onRequest?: (data: { context: Context; operation: any }) => void
 }) {
   const app = new Hono()
 
-  // Normalize input
-  options.openapi = normalize(options.openapi)
-  // TODO: The parser should work with objects *and* string, but the typing seems to be wrong. :)
-  // @ts-expect-error
-  const specification = await parse(options.openapi)
+  // Resolve references
+  const result = await openapi().load(options.specification).resolve()
 
   // OpenAPI file
   app.get('/openapi.json', (c) => {
-    if (!options?.openapi) {
+    if (!options?.specification) {
       return c.text('Not found', 404)
     }
 
-    return c.json(options.openapi)
+    return c.json(options.specification)
   })
 
   // Paths
-  Object.keys(specification.document.paths ?? {}).forEach((path) => {
+  Object.keys(result.schema.paths ?? {}).forEach((path) => {
     // Request methods
-    Object.keys(specification.document.paths[path]).forEach((method) => {
+    Object.keys(result.schema.paths[path]).forEach((method) => {
       const route = routeFromPath(path)
 
       // Route
@@ -40,12 +37,12 @@ export async function createMockServer(options?: {
         if (options?.onRequest) {
           options.onRequest({
             context: c,
-            operation: specification.document.paths[path][method],
+            operation: result.schema.paths[path][method],
           })
         }
 
         // Response
-        const operation = specification.document.paths[path][method]
+        const operation = result.schema.paths[path][method]
 
         const jsonResponseConfiguration =
           operation.responses?.['200']?.content['application/json']

@@ -1,18 +1,18 @@
-import { Validator } from '@seriousme/openapi-schema-validator'
+import { openapi } from '@scalar/openapi-parser'
 import kleur from 'kleur'
-import type { OpenAPI } from 'openapi-types'
+import fs from 'node:fs'
 
 export async function loadOpenApiFile(file: string) {
-  const validator = new Validator()
-  const result = await validator.validate(file)
+  const specification = fs.readFileSync(file, 'utf8')
 
-  if (result.valid) {
-    const schema = validator.resolveRefs() as OpenAPI.Document
+  const result = await openapi().load(specification).resolve()
+  const { valid, version, schema } = result
 
+  if (valid) {
     console.log(
       kleur.bold().white('[INFO]'),
       kleur.bold().white(schema.info.title),
-      kleur.grey(`(OpenAPI v${validator.version})`),
+      kleur.grey(`(OpenAPI v${version})`),
     )
     // Stats
     const pathsCount = Object.keys(schema.paths).length
@@ -38,5 +38,5 @@ export async function loadOpenApiFile(file: string) {
     console.log()
   }
 
-  return validator
+  return result
 }

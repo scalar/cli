@@ -46,7 +46,7 @@ export function MockCommand() {
 
           server.close()
           server = await bootServer({
-            openapi: specification,
+            specification,
             port,
           })
         })
@@ -57,7 +57,7 @@ export function MockCommand() {
 
       // Listen for requests
       server = await bootServer({
-        openapi: specification,
+        specification,
         port,
       })
     },
@@ -67,14 +67,14 @@ export function MockCommand() {
 }
 
 async function bootServer({
-  openapi,
+  specification,
   port,
 }: {
-  openapi: OpenAPI.Document
+  specification: OpenAPI.Document
   port?: number
 }) {
   const app = await createMockServer({
-    openapi,
+    specification,
     onRequest,
   })
 

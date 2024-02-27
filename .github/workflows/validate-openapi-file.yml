@@ -18,5 +18,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Format OpenAPI File
+        run: npx @scalar/cli format ./packages/cli/openapi.json
       - name: Validate OpenAPI File
         run: npx @scalar/cli validate ./packages/cli/openapi.json

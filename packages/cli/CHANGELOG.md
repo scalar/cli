@@ -1,5 +1,18 @@
 # @scalar/cli
 
+## 0.2.0
+
+### Minor Changes
+
+- a866e91: refactor: switch to @scalar/openapi-parser
+
+### Patch Changes
+
+- 0399390: chore: update dependencies
+- Updated dependencies [a866e91]
+- Updated dependencies [0399390]
+  - @scalar/mock-server@0.1.0
+
 ## 0.1.0
 
 ### Minor Changes

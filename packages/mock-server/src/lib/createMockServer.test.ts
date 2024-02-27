@@ -4,7 +4,7 @@ import { createMockServer } from './createMockServer'
 
 describe('createMockServer', () => {
   it('GET /foobar -> example JSON', async () => {
-    const openapi = {
+    const specification = {
       openapi: '3.1.0',
       info: {
         title: 'Hello World',
@@ -31,7 +31,7 @@ describe('createMockServer', () => {
     }
 
     const server = await createMockServer({
-      openapi,
+      specification,
     })
 
     const response = await server.request('/foobar')
@@ -43,7 +43,7 @@ describe('createMockServer', () => {
   })
 
   it('POST /foobar -> example JSON', async () => {
-    const openapi = {
+    const specification = {
       openapi: '3.1.0',
       info: {
         title: 'Hello World',
@@ -70,7 +70,7 @@ describe('createMockServer', () => {
     }
 
     const server = await createMockServer({
-      openapi,
+      specification,
     })
 
     const response = await server.request('/foobar', {
@@ -84,7 +84,7 @@ describe('createMockServer', () => {
   })
 
   it('POST /foobar/{id} -> example JSON', async () => {
-    const openapi = {
+    const specification = {
       openapi: '3.1.0',
       info: {
         title: 'Hello World',
@@ -111,7 +111,7 @@ describe('createMockServer', () => {
     }
 
     const server = await createMockServer({
-      openapi,
+      specification,
     })
 
     const response = await server.request('/foobar/123')
@@ -123,7 +123,7 @@ describe('createMockServer', () => {
   })
 
   it('GET /foobar -> example from schema', async () => {
-    const openapi = {
+    const specification = {
       openapi: '3.1.0',
       info: {
         title: 'Hello World',
@@ -156,7 +156,7 @@ describe('createMockServer', () => {
     }
 
     const server = await createMockServer({
-      openapi,
+      specification,
     })
 
     const response = await server.request('/foobar')
@@ -168,7 +168,7 @@ describe('createMockServer', () => {
   })
 
   it('GET /foobar/{id} -> example from schema', async () => {
-    const openapi = {
+    const specification = {
       openapi: '3.1.0',
       info: {
         title: 'Hello World',
@@ -201,7 +201,7 @@ describe('createMockServer', () => {
     }
 
     const server = await createMockServer({
-      openapi,
+      specification,
     })
 
     const response = await server.request('/foobar/123')

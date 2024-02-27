@@ -1,6 +1,7 @@
-import { Validator } from '@seriousme/openapi-schema-validator'
+import { openapi } from '@scalar/openapi-parser'
 import { Command } from 'commander'
 import kleur from 'kleur'
+import fs from 'node:fs'
 import prettyjson from 'prettyjson'
 
 import { useGivenFileOrConfiguration } from '../../utils'
@@ -13,15 +14,18 @@ export function ValidateCommand() {
   cmd.action(async (fileArgument: string) => {
     const startTime = performance.now()
 
+    // Read file
     const file = useGivenFileOrConfiguration(fileArgument)
+    const specification = fs.readFileSync(file, 'utf8')
 
-    const validator = new Validator()
-    const result = await validator.validate(file)
+    // Validate
+    const result = await openapi().load(specification).validate()
+
     if (result.valid) {
       console.log(
         kleur.green(
           `Matches the OpenAPI specification${kleur.white(
-            ` (OpenAPI ${kleur.bold(validator.version)})`,
+            ` (OpenAPI ${kleur.bold(result.version)})`,
           )}`,
         ),
       )

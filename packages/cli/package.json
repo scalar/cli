@@ -38,6 +38,7 @@
     "@parcel/watcher": "^2.4.1",
     "@scalar/api-reference": "^1.17.4",
     "@scalar/mock-server": "workspace:*",
+    "@scalar/openapi-parser": "^0.2.0",
     "@seriousme/openapi-schema-validator": "^2.2.1",
     "commander": "^12.0.0",
     "hono": "^4.0.7",

@@ -38,7 +38,7 @@
     "@parcel/watcher": "^2.4.1",
     "@scalar/api-reference": "^1.19.1",
     "@scalar/mock-server": "workspace:*",
-    "@scalar/openapi-parser": "^0.3.0",
+    "@scalar/openapi-parser": "^0.3.2",
     "commander": "^12.0.0",
     "hono": "^4.1.0",
     "kleur": "^4.1.5",

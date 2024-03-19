@@ -1,3 +1,5 @@
+> This repository was moved to our monorepo: https://github.com/scalar/scalar/tree/main/packages/cli
+
 # Scalar CLI
 
 [![CI](https://github.com/scalar/cli/actions/workflows/ci.yml/badge.svg)](https://github.com/scalar/cli/actions/workflows/ci.yml)

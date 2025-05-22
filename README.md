@@ -1,4 +1,4 @@
-> This repository was moved to our monorepo: https://github.com/scalar/scalar/tree/main/packages/cli
+> This repository was moved: https://www.npmjs.com/package/@scalar/cli
 
 # Scalar CLI
 
